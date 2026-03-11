@@ -1,0 +1,247 @@
+# CLAUDE.md — Agent Operating Rules for Chrug
+
+## Identity
+You are a Claude Code agent executing a specific ticket from the Chrug Sprint board on Monday.com. You are one of up to 10 agents working in parallel. You do not own the architecture. You own only the files specified in your ticket.
+
+## First Action — Every Session
+1. Read `tasks/lessons.md` if it exists. These are rules from past mistakes. Follow them.
+2. Read your assigned ticket fully before writing any code.
+3. Read the relevant spec files in `docs/` referenced by your ticket.
+4. Read design PNGs in `design/screens/` referenced by your ticket.
+
+---
+
+## Workflow Orchestration
+
+### 1. Plan Mode Default
+- Enter plan mode for ANY non-trivial task (3+ steps or architectural decisions)
+- If something goes sideways, STOP and re-plan immediately — don't keep pushing
+- Use plan mode for verification steps, not just building
+- Write detailed specs upfront to reduce ambiguity
+
+### 2. Subagent Strategy
+- Use subagents liberally to keep main context window clean
+- Offload research, exploration, and parallel analysis to subagents
+- For complex problems, throw more compute at it via subagents
+- One task per subagent for focused execution
+
+### 3. Self-Improvement Loop
+- After ANY correction from the user: update `tasks/lessons.md` with the pattern
+- Write rules for yourself that prevent the same mistake
+- Ruthlessly iterate on these lessons until mistake rate drops
+- Review lessons at session start for relevant project
+
+### 4. Verification Before Done
+- Never mark a task complete without proving it works
+- Diff behavior between main and your changes when relevant
+- Ask yourself: "Would a staff engineer approve this?"
+- Run tests, check logs, demonstrate correctness
+
+### 5. Demand Elegance (Balanced)
+- For non-trivial changes: pause and ask "is there a more elegant way?"
+- If a fix feels hacky: "Knowing everything I know now, implement the elegant solution"
+- Skip this for simple, obvious fixes — don't over-engineer
+- Challenge your own work before presenting it
+
+### 6. Autonomous Bug Fixing
+- When given a bug report: just fix it. Don't ask for hand-holding
+- Point at logs, errors, failing tests — then resolve them
+- Zero context switching required from the user
+- Go fix failing CI tests without being told how
+
+---
+
+## Task Management
+
+1. **Plan First**: Write plan to `tasks/todo.md` with checkable items
+2. **Verify Plan**: Check in before starting implementation
+3. **Track Progress**: Mark items complete as you go
+4. **Explain Changes**: High-level summary at each step
+5. **Document Results**: Add review section to `tasks/todo.md`
+6. **Capture Lessons**: Update `tasks/lessons.md` after corrections
+
+---
+
+## Core Principles
+
+- **Simplicity First**: Make every change as simple as possible. Impact minimal code.
+- **No Laziness**: Find root causes. No temporary fixes. Senior developer standards.
+- **Minimal Impact**: Changes should only touch what's necessary. Avoid introducing bugs.
+- **No Guessing**: If your ticket doesn't specify something, check the spec files in `docs/`. If still unclear, stop and flag it.
+- **No Invention**: Do not add features, screens, flows, or behaviors not in your ticket.
+
+---
+
+## Ticket Execution Rules
+
+### What You Must Do
+- Read your full ticket (posted as an update on the Monday item)
+- Create ONLY the files listed in "Files To Create"
+- Modify ONLY the files listed in "Files To Modify"
+- Follow the "Implementation Steps" in order
+- Satisfy every "Acceptance Criteria" item (they are binary — pass or fail)
+- Handle every "Failure Case" listed
+- Write every test in "Test Requirements"
+- Run `flutter analyze` — must return zero errors
+- Run `flutter test` for your tests — must pass
+
+### What You Must NOT Do
+- Touch files listed in "Forbidden Files"
+- Modify files not listed in "Files To Create" or "Files To Modify"
+- Add dependencies to pubspec.yaml (unless your ticket is INFRA-001)
+- Change app_router.dart beyond replacing your specific PlaceholderScreen (unless your ticket is FOUND-002)
+- Invent UI layouts, colors, spacing, or interactions not in the ticket or design PNGs
+- Add features not specified in the ticket
+- Assume what another agent's ticket will produce — depend only on what "Depends On" guarantees
+
+### File Ownership
+Each ticket owns specific files. Two agents must NEVER edit the same file. If your ticket says "Files To Create: lib/features/workout/screens/workout_day_screen.dart", that file is yours and only yours. No other agent touches it.
+
+### PlaceholderScreen Replacement
+UI tickets replace one PlaceholderScreen reference in app_router.dart. This is the ONLY allowed edit to app_router.dart for UI tickets:
+- Find: `PlaceholderScreen('YourScreenName')`
+- Replace with: `YourActualScreen()`
+- Add the import at the top of the file
+
+---
+
+## Project Structure
+
+```
+chrugm12/
+├── docs/                          # Frozen spec files (read-only reference)
+│   ├── PRODUCT_SPEC.md
+│   ├── USER_FLOWS.md
+│   ├── UI_STRUCTURE.md
+│   ├── UI_BEHAVIOR_SPEC.md
+│   ├── SYSTEM_ARCHITECTURE.md
+│   ├── DATA_MODEL.md
+│   ├── API_SPEC.md
+│   ├── TEST_STRATEGY.md
+│   ├── RELEASE_SCOPE.md
+│   └── EMULATOR_VALIDATION_SPEC.md
+├── design/screens/                # Figma exports (read-only reference)
+│   ├── splash.png
+│   ├── workout_days.png
+│   └── ... (27 screen PNGs)
+├── tasks/                         # Agent working files
+│   ├── todo.md                    # Current task plan + progress
+│   └── lessons.md                 # Self-improvement rules (persistent)
+├── lib/                           # Flutter app source (created by INFRA-001)
+│   ├── main.dart
+│   ├── app.dart
+│   ├── core/
+│   │   ├── theme/                 # FOUND-001 owns this
+│   │   ├── widgets/
+│   │   │   ├── layout/            # FOUND-003a owns this
+│   │   │   ├── input/             # FOUND-003b owns this
+│   │   │   └── display/           # FOUND-003c owns this
+│   │   └── constants/
+│   ├── data/
+│   │   ├── database/              # DATA-001 owns this
+│   │   ├── models/                # DATA-002 owns this
+│   │   └── seeds/                 # DATA-003 owns this
+│   ├── router/                    # FOUND-002 owns this
+│   └── features/
+│       ├── auth/                  # SVC-001, UI-001, UI-002, UI-003
+│       ├── workout/               # SVC-003, UI-007, UI-008
+│       ├── program/               # SVC-002, UI-004, UI-005a/b, UI-006
+│       ├── nutrition/             # SVC-004, UI-009, UI-010
+│       ├── ai_coach/              # SVC-005, UI-011
+│       └── profile/               # SVC-006, UI-012 through UI-018
+├── test/                          # TEST-001 owns this
+└── integration_test/              # TEST-002 owns this
+```
+
+---
+
+## Tech Stack
+
+- **Flutter 3.x / Dart 3.x** — app framework
+- **Riverpod 2.x** — state management (StateNotifierProvider pattern)
+- **Drift** — SQLite ORM (local database, offline-first)
+- **go_router** — navigation with StatefulShellRoute for tabs
+- **freezed + json_serializable** — immutable models with code generation
+- **shared_preferences** — lightweight key-value persistence
+- **file_picker / image_picker** — file and photo selection
+- **share_plus** — native share sheet
+- **uuid** — ID generation
+- **intl** — date/number formatting
+- **logger** — structured logging
+
+### Phase 1 Constraints
+- NO backend. No API calls. No Supabase. No real AI.
+- ALL data is local SQLite via Drift.
+- ALL AI responses are mock (keyword-matched from seed data).
+- ALL auth is mock (hardcoded OTP "123456").
+- ALL integrations are mock (simulated connect/disconnect).
+
+---
+
+## Design Reference Rules
+
+- Design PNGs in `design/screens/` are visual references for layout, colors, and spacing
+- The TICKET is the source of truth, not the PNG
+- If the ticket says "bottom tab bar visible" but the PNG doesn't show it — follow the ticket
+- If the PNG shows a color but the ticket references AppColors.primary — use AppColors.primary
+- Use PNGs to understand visual hierarchy, component placement, and screen density
+
+---
+
+## Emulator Validation
+
+All UI tickets require verification on iPhone 17 Pro simulator, portrait mode:
+- Safe areas respected (no content behind notch or home indicator)
+- Keyboard doesn't cover input fields
+- Scroll works on all scrollable screens
+- Button taps respond correctly
+- Loading indicators appear during async operations
+- Toasts display and auto-dismiss
+- Navigation transitions work forward and back
+- Tab switching preserves state
+- No console errors
+
+---
+
+## Quality Gates
+
+Before marking your ticket as Done:
+1. ✅ `flutter analyze` returns zero errors
+2. ✅ All files in "Files To Create" exist
+3. ✅ No files outside your scope were modified
+4. ✅ All acceptance criteria pass
+5. ✅ All tests pass
+6. ✅ Emulator validation passes (if UI ticket)
+7. ✅ `tasks/todo.md` updated with results
+8. ✅ `tasks/lessons.md` updated if any corrections were made
+
+---
+
+## lessons.md Format
+
+```markdown
+# Lessons Learned
+
+## [Date] - [Ticket ID] - [Category]
+**Mistake**: What went wrong
+**Rule**: The rule to prevent it from happening again
+**Example**: Concrete before/after if helpful
+```
+
+Example entry:
+```markdown
+## 2026-03-11 - FOUND-001 - Theme
+**Mistake**: Used deprecated primaryColor instead of colorScheme in ThemeData
+**Rule**: Always use ThemeData with colorScheme constructor, never primaryColor
+**Example**: Use `ThemeData(colorScheme: ColorScheme(...))` not `ThemeData(primaryColor: ...)`
+```
+
+---
+
+## Git Rules
+
+- Work on a branch named `ticket/{TICKET-ID}` (e.g. `ticket/FOUND-001`)
+- Commit messages: `[TICKET-ID] description` (e.g. `[FOUND-001] Add design system theme constants`)
+- Do not commit to main directly
+- Do not merge your own branch — the founder reviews and merges
+- Pull latest main before starting work
