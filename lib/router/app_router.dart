@@ -9,6 +9,7 @@ import '../features/onboarding/screens/first_time_screen.dart';
 import '../features/onboarding/screens/watch_demo_screen.dart';
 import '../features/workout/screens/workout_days_screen.dart';
 import '../features/workout/screens/exercise_details_screen.dart';
+import '../features/nutrition/screens/food_logger_screen.dart';
 import 'route_constants.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -104,8 +105,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: Routes.foodLog,
-                builder: (context, state) =>
-                    const PlaceholderScreen(routeName: 'Food Log'),
+                builder: (context, state) => const FoodLoggerScreen(),
               ),
             ],
           ),
