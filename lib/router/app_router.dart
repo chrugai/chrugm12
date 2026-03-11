@@ -8,6 +8,7 @@ import '../features/common/widgets/bottom_tab_navigator.dart';
 import '../features/onboarding/screens/first_time_screen.dart';
 import '../features/onboarding/screens/watch_demo_screen.dart';
 import '../features/workout/screens/workout_days_screen.dart';
+import '../features/workout/screens/exercise_details_screen.dart';
 import 'route_constants.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -72,9 +73,9 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                     routes: [
                       GoRoute(
                         path: Routes.exerciseDetails,
-                        builder: (context, state) => PlaceholderScreen(
-                          routeName:
-                              'Exercise ${state.pathParameters['exerciseId']}',
+                        builder: (context, state) => ExerciseDetailsScreen(
+                          exerciseId: state.pathParameters['exerciseId'] ?? '',
+                          dayId: state.pathParameters['dayId'] ?? '',
                         ),
                       ),
                     ],
