@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../features/auth/screens/splash_screen.dart';
 import '../features/common/screens/placeholder_screen.dart';
 import '../features/common/widgets/bottom_tab_navigator.dart';
+import '../features/ai_coach/screens/ai_coach_screen.dart';
 import '../features/auth/screens/first_time_user_screen.dart';
 import '../features/auth/screens/watch_demo_screen.dart';
 import 'route_constants.dart';
@@ -100,7 +101,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: Routes.aiCoach,
                 builder: (context, state) =>
-                    const PlaceholderScreen(routeName: 'AI Coach'),
+                    const AiCoachScreen(),
               ),
             ],
           ),
