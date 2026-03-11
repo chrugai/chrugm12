@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../features/auth/screens/splash_screen.dart';
 import '../features/common/screens/placeholder_screen.dart';
 import '../features/common/widgets/bottom_tab_navigator.dart';
-import 'auth_guard.dart';
 import 'route_constants.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -15,14 +15,12 @@ final _foodLogNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'foodLog');
 final appRouterProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     navigatorKey: _rootNavigatorKey,
-    initialLocation: Routes.workout,
-    redirect: authGuard,
+    initialLocation: Routes.splash,
     routes: [
       // Auth routes (outside shell)
       GoRoute(
         path: Routes.splash,
-        builder: (context, state) =>
-            const PlaceholderScreen(routeName: 'Splash'),
+        builder: (context, state) => const SplashScreen(),
       ),
       GoRoute(
         path: Routes.firstTime,
