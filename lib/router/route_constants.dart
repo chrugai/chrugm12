@@ -10,6 +10,7 @@ abstract class Routes {
   static const String workout = '/workout';
   static const String aiCoach = '/ai-coach';
   static const String foodLog = '/food-log';
+  static const String addFood = '/add-food';
 
   // Workout sub-routes
   static const String workoutDay = 'day/:dayId';

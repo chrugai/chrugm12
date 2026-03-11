@@ -8,18 +8,14 @@ import 'package:chrugm12/data/models/program.dart';
 import 'package:chrugm12/data/models/state/program_state.dart';
 import 'package:chrugm12/features/program/providers/program_provider.dart';
 import 'package:chrugm12/features/program/screens/program_details_preview.dart';
-import 'package:chrugm12/features/program/services/program_service.dart';
 
-class FakeProgramNotifier extends ProgramNotifier {
-  FakeProgramNotifier() : super(FakeProgramService());
+class FakeProgramNotifier extends StateNotifier<ProgramState>
+    implements ProgramNotifier {
+  FakeProgramNotifier() : super(ProgramState.initial());
 
   void setPrograms(List<Program> programs) {
     state = state.copyWith(programs: programs, isLoading: false);
   }
-}
-
-class FakeProgramService extends ProgramService {
-  FakeProgramService() : super(null as dynamic);
 
   @override
   dynamic noSuchMethod(Invocation invocation) => null;
@@ -28,7 +24,7 @@ class FakeProgramService extends ProgramService {
 Exercise _exercise(String id, String name) => Exercise(
       exerciseId: id,
       name: name,
-      muscleGroups: ['test'],
+      muscleGroups: const ['test'],
       createdAt: DateTime(2024),
     );
 

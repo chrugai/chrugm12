@@ -6,18 +6,14 @@ import 'package:chrugm12/data/models/program.dart';
 import 'package:chrugm12/data/models/state/program_state.dart';
 import 'package:chrugm12/features/program/providers/program_provider.dart';
 import 'package:chrugm12/features/program/screens/pick_program_screen.dart';
-import 'package:chrugm12/features/program/services/program_service.dart';
 
-class FakeProgramNotifier extends ProgramNotifier {
-  FakeProgramNotifier() : super(FakeProgramService());
+class FakeProgramNotifier extends StateNotifier<ProgramState>
+    implements ProgramNotifier {
+  FakeProgramNotifier() : super(ProgramState.initial());
 
   void setPrograms(List<Program> programs) {
     state = state.copyWith(programs: programs, isLoading: false);
   }
-}
-
-class FakeProgramService extends ProgramService {
-  FakeProgramService() : super(null as dynamic);
 
   @override
   dynamic noSuchMethod(Invocation invocation) => null;
@@ -29,7 +25,7 @@ final _testPrograms = [
     userId: 'local_user',
     name: 'Push / Pull / Legs',
     description: 'Classic 3-day split targeting push muscles, pull muscles, and legs.',
-    days: [],
+    days: const [],
     isActive: true,
     createdAt: DateTime(2024),
     updatedAt: DateTime(2024),
@@ -39,7 +35,7 @@ final _testPrograms = [
     userId: 'local_user',
     name: 'Upper / Lower',
     description: '4-day split alternating upper and lower body workouts.',
-    days: [],
+    days: const [],
     isActive: false,
     createdAt: DateTime(2024),
     updatedAt: DateTime(2024),
@@ -49,7 +45,7 @@ final _testPrograms = [
     userId: 'local_user',
     name: 'Full Body',
     description: '3-day full body program hitting every major muscle group each session.',
-    days: [],
+    days: const [],
     isActive: false,
     createdAt: DateTime(2024),
     updatedAt: DateTime(2024),
@@ -59,7 +55,7 @@ final _testPrograms = [
     userId: 'local_user',
     name: 'Bro Split',
     description: 'Classic 5-day bodybuilding split with one muscle group per day.',
-    days: [],
+    days: const [],
     isActive: false,
     createdAt: DateTime(2024),
     updatedAt: DateTime(2024),

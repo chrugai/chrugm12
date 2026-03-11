@@ -12,6 +12,7 @@ import '../features/program/screens/pick_program_screen.dart';
 import '../features/program/screens/program_details_preview.dart';
 import '../features/workout/screens/exercise_details_screen.dart';
 import '../features/nutrition/screens/food_logger_screen.dart';
+import '../features/nutrition/screens/add_food_screen.dart';
 import 'route_constants.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
