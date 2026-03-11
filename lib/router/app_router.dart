@@ -5,8 +5,9 @@ import 'package:go_router/go_router.dart';
 import '../features/auth/screens/splash_screen.dart';
 import '../features/common/screens/placeholder_screen.dart';
 import '../features/common/widgets/bottom_tab_navigator.dart';
-import '../features/auth/screens/first_time_user_screen.dart';
-import '../features/auth/screens/watch_demo_screen.dart';
+import '../features/onboarding/screens/first_time_screen.dart';
+import '../features/onboarding/screens/watch_demo_screen.dart';
+import '../features/workout/screens/workout_days_screen.dart';
 import 'route_constants.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -19,14 +20,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     navigatorKey: _rootNavigatorKey,
     initialLocation: Routes.splash,
     routes: [
-      // Auth routes (outside shell)
       GoRoute(
         path: Routes.splash,
         builder: (context, state) => const SplashScreen(),
       ),
       GoRoute(
         path: Routes.firstTime,
-        builder: (context, state) => const FirstTimeUserScreen(),
+        builder: (context, state) => const FirstTimeScreen(),
       ),
       GoRoute(
         path: Routes.watchDemo,
@@ -42,8 +42,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) =>
             const PlaceholderScreen(routeName: 'Verify'),
       ),
-
-      // Main tabbed shell
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return Scaffold(
@@ -58,14 +56,12 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           );
         },
         branches: [
-          // Workout branch
           StatefulShellBranch(
             navigatorKey: _workoutNavigatorKey,
             routes: [
               GoRoute(
                 path: Routes.workout,
-                builder: (context, state) =>
-                    const PlaceholderScreen(routeName: 'Workout Days'),
+                builder: (context, state) => const WorkoutDaysScreen(),
                 routes: [
                   GoRoute(
                     path: Routes.workoutDay,
@@ -92,8 +88,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
               ),
             ],
           ),
-
-          // AI Coach branch
           StatefulShellBranch(
             navigatorKey: _aiCoachNavigatorKey,
             routes: [
@@ -104,8 +98,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
               ),
             ],
           ),
-
-          // Food Log branch
           StatefulShellBranch(
             navigatorKey: _foodLogNavigatorKey,
             routes: [
@@ -118,8 +110,6 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           ),
         ],
       ),
-
-      // Profile & settings (outside shell, full-screen)
       GoRoute(
         path: Routes.profile,
         builder: (context, state) =>
@@ -129,6 +119,16 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: Routes.pickProgram,
         builder: (context, state) =>
             const PlaceholderScreen(routeName: 'Pick a Program'),
+      ),
+      GoRoute(
+        path: Routes.programCreate,
+        builder: (context, state) =>
+            const PlaceholderScreen(routeName: 'Create Program'),
+      ),
+      GoRoute(
+        path: Routes.programChange,
+        builder: (context, state) =>
+            const PlaceholderScreen(routeName: 'Change Program'),
       ),
       GoRoute(
         path: Routes.programDetails,
