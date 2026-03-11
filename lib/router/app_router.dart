@@ -6,6 +6,8 @@ import '../features/auth/screens/splash_screen.dart';
 import '../features/common/screens/placeholder_screen.dart';
 import '../features/common/widgets/bottom_tab_navigator.dart';
 import '../features/auth/screens/first_time_user_screen.dart';
+import '../features/auth/screens/account_verification_screen.dart';
+import '../features/auth/screens/signup_screen.dart';
 import '../features/auth/screens/watch_demo_screen.dart';
 import 'route_constants.dart';
 
@@ -34,13 +36,17 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: Routes.signup,
-        builder: (context, state) =>
-            const PlaceholderScreen(routeName: 'Signup'),
+        builder: (context, state) {
+          final email = state.extra as String?;
+          return SignupScreen(initialEmail: email);
+        },
       ),
       GoRoute(
         path: Routes.verify,
-        builder: (context, state) =>
-            const PlaceholderScreen(routeName: 'Verify'),
+        builder: (context, state) {
+          final email = state.extra as String? ?? '';
+          return AccountVerificationScreen(email: email);
+        },
       ),
 
       // Main tabbed shell
