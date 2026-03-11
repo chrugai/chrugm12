@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../features/auth/screens/splash_screen.dart';
 import '../features/common/screens/placeholder_screen.dart';
+import '../features/profile/screens/uploads_screen.dart';
 import '../features/common/widgets/bottom_tab_navigator.dart';
 import '../features/onboarding/screens/first_time_screen.dart';
 import '../features/onboarding/screens/watch_demo_screen.dart';
@@ -144,8 +145,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: Routes.uploads,
-        builder: (context, state) =>
-            const PlaceholderScreen(routeName: 'Uploads'),
+        builder: (context, state) => const UploadsScreen(),
       ),
       GoRoute(
         path: Routes.integrations,
