@@ -1,154 +1,117 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+
 import 'package:chrugm12/data/models/chat.dart';
 import 'package:chrugm12/data/models/message.dart';
-import 'package:chrugm12/data/models/state/ai_coach_state.dart';
-import 'package:chrugm12/data/seeds/ai_response_seeds.dart';
+import 'package:chrugm12/features/ai_coach/widgets/chat_message_bubble.dart';
+import 'package:chrugm12/features/ai_coach/widgets/chat_history_sidebar.dart';
+import 'package:chrugm12/features/ai_coach/widgets/chat_input_bar.dart';
+
+Widget _wrap(Widget child) {
+  return ProviderScope(
+    child: MaterialApp(home: Scaffold(body: child)),
+  );
+}
 
 void main() {
-  final now = DateTime.utc(2026, 1, 1);
-
-  group('generateMockResponse', () {
-    String generateMockResponse(String userMessage) {
-      final lower = userMessage.toLowerCase();
-      final responses = getAiResponses();
-      for (final entry in responses.entries) {
-        if (lower.contains(entry.key)) {
-          return entry.value;
-        }
-      }
-      return aiFallbackResponse;
-    }
-
-    test('returns deload-related text for "should I deload"', () {
-      final response = generateMockResponse('should I deload');
-      expect(response.toLowerCase(), contains('deload'));
-      expect(response, isNotEmpty);
-    });
-
-    test('returns protein advice for "how much protein"', () {
-      final response = generateMockResponse('how much protein do I need');
-      expect(response.toLowerCase(), contains('protein'));
-    });
-
-    test('returns fallback for unmatched input', () {
-      final response = generateMockResponse('random xyz nothing matches');
-      expect(response, aiFallbackResponse);
-    });
-
-    test('keyword matching is case-insensitive', () {
-      final response = generateMockResponse('Should I DELOAD this week?');
-      expect(response.toLowerCase(), contains('deload'));
-    });
-  });
-
-  group('AiCoachState', () {
-    test('initial state has empty messages and chats', () {
-      final state = AiCoachState.initial();
-      expect(state.messages, isEmpty);
-      expect(state.chats, isEmpty);
-      expect(state.currentChatId, isNull);
-      expect(state.isLoading, false);
-      expect(state.error, isNull);
-    });
-
-    test('copyWith sets currentChatId and messages', () {
+  group('ChatMessageBubble', () {
+    testWidgets('renders user message right-aligned', (tester) async {
       final msg = Message(
-        messageId: 'msg1',
-        chatId: 'chat1',
-        role: 'user',
-        content: 'Hello',
-        timestamp: now,
-      );
-
-      final state = AiCoachState.initial().copyWith(
-        currentChatId: 'chat1',
-        messages: [msg],
-      );
-
-      expect(state.currentChatId, 'chat1');
-      expect(state.messages.length, 1);
-      expect(state.messages.first.content, 'Hello');
-    });
-
-    test('deleteChat removes from chats list', () {
-      final chat1 = Chat(
+        messageId: 'm1',
         chatId: 'c1',
-        userId: 'u1',
-        title: 'Chat 1',
-        messages: const [],
-        createdAt: now,
-        updatedAt: now,
-      );
-      final chat2 = Chat(
-        chatId: 'c2',
-        userId: 'u1',
-        title: 'Chat 2',
-        messages: const [],
-        createdAt: now,
-        updatedAt: now,
+        role: 'user',
+        content: 'Should I deload?',
+        timestamp: DateTime(2025, 1, 15, 14, 30),
       );
 
-      var state = AiCoachState.initial().copyWith(
-        chats: [chat1, chat2],
-        currentChatId: 'c1',
+      await tester.pumpWidget(_wrap(ChatMessageBubble(message: msg)));
+
+      expect(find.text('Should I deload?'), findsOneWidget);
+      expect(find.text('2:30 PM'), findsOneWidget);
+    });
+
+    testWidgets('renders AI message left-aligned', (tester) async {
+      final msg = Message(
+        messageId: 'm2',
+        chatId: 'c1',
+        role: 'assistant',
+        content: 'Based on your training data, a deload might be beneficial.',
+        timestamp: DateTime(2025, 1, 15, 14, 31),
       );
 
-      // Simulate delete of c1
-      final remaining = state.chats.where((c) => c.chatId != 'c1').toList();
-      state = state.copyWith(
-        chats: remaining,
-        currentChatId: null,
-        messages: const [],
-      );
+      await tester.pumpWidget(_wrap(ChatMessageBubble(message: msg)));
 
-      expect(state.chats.length, 1);
-      expect(state.chats.first.chatId, 'c2');
-      expect(state.currentChatId, isNull);
-      expect(state.messages, isEmpty);
+      expect(find.textContaining('deload might be beneficial'), findsOneWidget);
     });
   });
 
-  group('Chat title truncation', () {
-    test('short message becomes title as-is', () {
-      const content = 'How do I build muscle?';
-      final title =
-          content.length > 50 ? '${content.substring(0, 50)}...' : content;
-      expect(title, 'How do I build muscle?');
+  group('ChatInputBar', () {
+    testWidgets('send button appears when text entered', (tester) async {
+      await tester.pumpWidget(_wrap(
+        ChatInputBar(onSend: (_) {}, onAttach: () {}),
+      ));
+
+      // Initially no send button
+      expect(find.byIcon(Icons.send), findsNothing);
+
+      // Type text
+      await tester.enterText(find.byType(TextField), 'Hello');
+      await tester.pump();
+
+      // Send button appears
+      expect(find.byIcon(Icons.send), findsOneWidget);
     });
 
-    test('long message gets truncated to 50 chars with ...', () {
-      const content =
-          'This is a really long message that should definitely be truncated because it exceeds fifty characters';
-      final title =
-          content.length > 50 ? '${content.substring(0, 50)}...' : content;
-      expect(title.length, 53); // 50 + "..."
-      expect(title, endsWith('...'));
+    testWidgets('fires onSend with text', (tester) async {
+      String? sentText;
+      await tester.pumpWidget(_wrap(
+        ChatInputBar(onSend: (t) => sentText = t, onAttach: () {}),
+      ));
+
+      await tester.enterText(find.byType(TextField), 'Test message');
+      await tester.pump();
+      await tester.tap(find.byIcon(Icons.send));
+
+      expect(sentText, 'Test message');
     });
   });
 
-  group('Message model', () {
-    test('user message has role "user"', () {
-      final msg = Message(
-        messageId: 'msg1',
-        chatId: 'chat1',
-        role: 'user',
-        content: 'Hello',
-        timestamp: now,
-      );
-      expect(msg.role, 'user');
-      expect(msg.fileUrl, isNull);
-    });
+  group('ChatHistorySidebar', () {
+    testWidgets('renders chat list', (tester) async {
+      final chats = [
+        Chat(
+          chatId: 'c1',
+          userId: 'u1',
+          title: 'Deload Discussion',
+          messages: [],
+          createdAt: DateTime(2025, 1, 15),
+          updatedAt: DateTime(2025, 1, 15),
+        ),
+        Chat(
+          chatId: 'c2',
+          userId: 'u1',
+          title: 'Meal Planning',
+          messages: [],
+          createdAt: DateTime(2025, 1, 14),
+          updatedAt: DateTime(2025, 1, 14),
+        ),
+      ];
 
-    test('message with file attachment', () {
-      final msg = Message(
-        messageId: 'msg2',
-        chatId: 'chat1',
-        role: 'user',
-        content: 'Check this image',
-        fileUrl: '/uploads/photo.jpg',
-        timestamp: now,
-      );
-      expect(msg.fileUrl, '/uploads/photo.jpg');
+      await tester.pumpWidget(_wrap(
+        ChatHistorySidebar(
+          chats: chats,
+          onChatSelected: (_) {},
+          onNewChat: () {},
+          onDeleteChat: (_) {},
+          onClose: () {},
+        ),
+      ));
+
+      expect(find.text('Chats'), findsOneWidget);
+      expect(find.text('Deload Discussion'), findsOneWidget);
+      expect(find.text('Meal Planning'), findsOneWidget);
+      expect(find.text('New Chat'), findsOneWidget);
     });
   });
 }
