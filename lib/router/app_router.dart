@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 
 import '../features/common/screens/placeholder_screen.dart';
 import '../features/common/widgets/bottom_tab_navigator.dart';
+import '../features/profile/screens/contact_form_screen.dart';
+import '../features/profile/screens/feedback_screen.dart';
 import 'auth_guard.dart';
 import 'route_constants.dart';
 
@@ -166,13 +168,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: Routes.contact,
-        builder: (context, state) =>
-            const PlaceholderScreen(routeName: 'Contact'),
+        builder: (context, state) => const ContactFormScreen(),
       ),
       GoRoute(
         path: Routes.feedback,
-        builder: (context, state) =>
-            const PlaceholderScreen(routeName: 'Feedback'),
+        builder: (context, state) => const FeedbackScreen(),
       ),
       GoRoute(
         path: Routes.notifications,
