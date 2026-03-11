@@ -8,6 +8,8 @@ import '../features/common/widgets/bottom_tab_navigator.dart';
 import '../features/onboarding/screens/first_time_screen.dart';
 import '../features/onboarding/screens/watch_demo_screen.dart';
 import '../features/workout/screens/workout_days_screen.dart';
+import '../features/program/screens/pick_program_screen.dart';
+import '../features/program/screens/program_details_preview.dart';
 import '../features/workout/screens/exercise_details_screen.dart';
 import '../features/nutrition/screens/food_logger_screen.dart';
 import 'route_constants.dart';
@@ -119,7 +121,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: Routes.pickProgram,
         builder: (context, state) =>
-            const PlaceholderScreen(routeName: 'Pick a Program'),
+            const PickAProgramScreen(),
       ),
       GoRoute(
         path: Routes.programCreate,
@@ -133,9 +135,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: Routes.programDetails,
-        builder: (context, state) => PlaceholderScreen(
-          routeName:
-              'Program ${state.pathParameters['programId']}',
+        builder: (context, state) => ProgramDetailsPreview(
+          programId: state.pathParameters['programId']!,
         ),
       ),
       GoRoute(
