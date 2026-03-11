@@ -7,6 +7,7 @@ import '../features/common/screens/placeholder_screen.dart';
 import '../features/common/widgets/bottom_tab_navigator.dart';
 import '../features/auth/screens/first_time_user_screen.dart';
 import '../features/auth/screens/watch_demo_screen.dart';
+import '../features/program/screens/select_exercise_screen.dart';
 import 'route_constants.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -85,8 +86,11 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                   ),
                   GoRoute(
                     path: Routes.selectExercise,
-                    builder: (context, state) =>
-                        const PlaceholderScreen(routeName: 'Select Exercise'),
+                    builder: (context, state) {
+                      final dayId = state.uri.queryParameters['dayId'] ?? '';
+                      final programName = state.uri.queryParameters['programName'];
+                      return SelectExerciseScreen(dayId: dayId, programName: programName);
+                    },
                   ),
                 ],
               ),

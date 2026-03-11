@@ -153,6 +153,24 @@ class ProgramService {
     }
   }
 
+
+  /// Add exercises to a day.
+  Future<void> addExercisesToDay(
+      String dayId, List<String> exerciseIds) async {
+    final existing = await _db.workoutDao.getDayExercises(dayId);
+    var order = existing.length;
+    for (final exerciseId in exerciseIds) {
+      order++;
+      await _db.workoutDao.insertDayExercise(DayExercisesCompanion(
+        id: Value(_uuid.v4()),
+        dayId: Value(dayId),
+        exerciseId: Value(exerciseId),
+        exerciseOrder: Value(order),
+        createdAt: Value(DateTime.now().toIso8601String()),
+      ));
+    }
+  }
+
   Future<List<models.Day>> _loadDays(String programId) async {
     final dayRows = await (_db.select(_db.days)
           ..where((t) => t.programId.equals(programId))

@@ -111,6 +111,18 @@ class ProgramNotifier extends StateNotifier<ProgramState> {
     }
   }
 
+
+  Future<void> addExercisesToDay(
+      String dayId, List<String> exerciseIds) async {
+    state = state.copyWith(isLoading: true, error: null);
+    try {
+      await _service.addExercisesToDay(dayId, exerciseIds);
+      await loadPrograms();
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+    }
+  }
+
   Future<void> reorderExercises(String dayId, List<String> exerciseIds) async {
     try {
       await _service.reorderExercises(dayId, exerciseIds);
