@@ -7,6 +7,7 @@ import '../features/common/screens/placeholder_screen.dart';
 import '../features/common/widgets/bottom_tab_navigator.dart';
 import '../features/onboarding/screens/first_time_screen.dart';
 import '../features/onboarding/screens/watch_demo_screen.dart';
+import '../features/workout/screens/workout_day_screen.dart';
 import '../features/workout/screens/workout_days_screen.dart';
 import '../features/program/screens/pick_program_screen.dart';
 import '../features/program/screens/program_details_preview.dart';
@@ -71,9 +72,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                 routes: [
                   GoRoute(
                     path: Routes.workoutDay,
-                    builder: (context, state) => PlaceholderScreen(
-                      routeName:
-                          'Workout Day ${state.pathParameters['dayId']}',
+                    builder: (context, state) => WorkoutDayScreen(
+                      dayId: state.pathParameters['dayId']!,
                     ),
                     routes: [
                       GoRoute(
