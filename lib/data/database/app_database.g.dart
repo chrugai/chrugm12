@@ -700,6 +700,9 @@ class $ProgramsTable extends Programs with TableInfo<$ProgramsTable, Program> {
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES users (user_id)',
+    ),
   );
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
@@ -1171,6 +1174,9 @@ class $DaysTable extends Days with TableInfo<$DaysTable, Day> {
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES programs (program_id)',
+    ),
   );
   static const VerificationMeta _dayNumberMeta = const VerificationMeta(
     'dayNumber',
@@ -2273,6 +2279,9 @@ class $DayExercisesTable extends DayExercises
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES days (day_id)',
+    ),
   );
   static const VerificationMeta _exerciseIdMeta = const VerificationMeta(
     'exerciseId',
@@ -2284,6 +2293,9 @@ class $DayExercisesTable extends DayExercises
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES exercises (exercise_id)',
+    ),
   );
   static const VerificationMeta _exerciseOrderMeta = const VerificationMeta(
     'exerciseOrder',
@@ -2642,6 +2654,9 @@ class $SetsTable extends Sets with TableInfo<$SetsTable, SetEntry> {
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES exercises (exercise_id)',
+    ),
   );
   static const VerificationMeta _dayIdMeta = const VerificationMeta('dayId');
   @override
@@ -2651,6 +2666,9 @@ class $SetsTable extends Sets with TableInfo<$SetsTable, SetEntry> {
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES days (day_id)',
+    ),
   );
   static const VerificationMeta _repsMeta = const VerificationMeta('reps');
   @override
@@ -3269,6 +3287,9 @@ class $MealsTable extends Meals with TableInfo<$MealsTable, Meal> {
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES users (user_id)',
+    ),
   );
   static const VerificationMeta _mealDateMeta = const VerificationMeta(
     'mealDate',
@@ -3967,6 +3988,9 @@ class $FoodsTable extends Foods with TableInfo<$FoodsTable, Food> {
     true,
     type: DriftSqlType.string,
     requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES users (user_id)',
+    ),
   );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
@@ -4485,6 +4509,9 @@ class $MealFoodsTable extends MealFoods
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES meals (meal_id)',
+    ),
   );
   static const VerificationMeta _foodIdMeta = const VerificationMeta('foodId');
   @override
@@ -4494,6 +4521,9 @@ class $MealFoodsTable extends MealFoods
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES foods (food_id)',
+    ),
   );
   static const VerificationMeta _quantityGramsMeta = const VerificationMeta(
     'quantityGrams',
@@ -4850,6 +4880,9 @@ class $MeasurementsTable extends Measurements
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES users (user_id)',
+    ),
   );
   static const VerificationMeta _measurementDateMeta = const VerificationMeta(
     'measurementDate',
@@ -5830,6 +5863,9 @@ class $UploadsTable extends Uploads with TableInfo<$UploadsTable, Upload> {
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES users (user_id)',
+    ),
   );
   static const VerificationMeta _fileNameMeta = const VerificationMeta(
     'fileName',
@@ -6296,6 +6332,9 @@ class $ChatsTable extends Chats with TableInfo<$ChatsTable, Chat> {
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES users (user_id)',
+    ),
   );
   static const VerificationMeta _titleMeta = const VerificationMeta('title');
   @override
@@ -6658,6 +6697,9 @@ class $MessagesTable extends Messages with TableInfo<$MessagesTable, Message> {
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES chats (chat_id)',
+    ),
   );
   static const VerificationMeta _roleMeta = const VerificationMeta('role');
   @override
@@ -7577,6 +7619,114 @@ final class $$UsersTableReferences
     extends BaseReferences<_$AppDatabase, $UsersTable, User> {
   $$UsersTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
+  static MultiTypedResultKey<$ProgramsTable, List<Program>> _programsRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.programs,
+    aliasName: $_aliasNameGenerator(db.users.userId, db.programs.userId),
+  );
+
+  $$ProgramsTableProcessedTableManager get programsRefs {
+    final manager = $$ProgramsTableTableManager($_db, $_db.programs).filter(
+      (f) => f.userId.userId.sqlEquals($_itemColumn<String>('user_id')!),
+    );
+
+    final cache = $_typedResult.readTableOrNull(_programsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$MealsTable, List<Meal>> _mealsRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.meals,
+    aliasName: $_aliasNameGenerator(db.users.userId, db.meals.userId),
+  );
+
+  $$MealsTableProcessedTableManager get mealsRefs {
+    final manager = $$MealsTableTableManager($_db, $_db.meals).filter(
+      (f) => f.userId.userId.sqlEquals($_itemColumn<String>('user_id')!),
+    );
+
+    final cache = $_typedResult.readTableOrNull(_mealsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$FoodsTable, List<Food>> _foodsRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.foods,
+    aliasName: $_aliasNameGenerator(db.users.userId, db.foods.userId),
+  );
+
+  $$FoodsTableProcessedTableManager get foodsRefs {
+    final manager = $$FoodsTableTableManager($_db, $_db.foods).filter(
+      (f) => f.userId.userId.sqlEquals($_itemColumn<String>('user_id')!),
+    );
+
+    final cache = $_typedResult.readTableOrNull(_foodsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$MeasurementsTable, List<Measurement>>
+  _measurementsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.measurements,
+    aliasName: $_aliasNameGenerator(db.users.userId, db.measurements.userId),
+  );
+
+  $$MeasurementsTableProcessedTableManager get measurementsRefs {
+    final manager = $$MeasurementsTableTableManager($_db, $_db.measurements)
+        .filter(
+          (f) => f.userId.userId.sqlEquals($_itemColumn<String>('user_id')!),
+        );
+
+    final cache = $_typedResult.readTableOrNull(_measurementsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$UploadsTable, List<Upload>> _uploadsRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.uploads,
+    aliasName: $_aliasNameGenerator(db.users.userId, db.uploads.userId),
+  );
+
+  $$UploadsTableProcessedTableManager get uploadsRefs {
+    final manager = $$UploadsTableTableManager($_db, $_db.uploads).filter(
+      (f) => f.userId.userId.sqlEquals($_itemColumn<String>('user_id')!),
+    );
+
+    final cache = $_typedResult.readTableOrNull(_uploadsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$ChatsTable, List<Chat>> _chatsRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.chats,
+    aliasName: $_aliasNameGenerator(db.users.userId, db.chats.userId),
+  );
+
+  $$ChatsTableProcessedTableManager get chatsRefs {
+    final manager = $$ChatsTableTableManager($_db, $_db.chats).filter(
+      (f) => f.userId.userId.sqlEquals($_itemColumn<String>('user_id')!),
+    );
+
+    final cache = $_typedResult.readTableOrNull(_chatsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
   static MultiTypedResultKey<$IntegrationsTable, List<Integration>>
   _integrationsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.integrations,
@@ -7658,6 +7808,156 @@ class $$UsersTableFilterComposer extends Composer<_$AppDatabase, $UsersTable> {
     column: $table.updatedAt,
     builder: (column) => ColumnFilters(column),
   );
+
+  Expression<bool> programsRefs(
+    Expression<bool> Function($$ProgramsTableFilterComposer f) f,
+  ) {
+    final $$ProgramsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.programs,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ProgramsTableFilterComposer(
+            $db: $db,
+            $table: $db.programs,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> mealsRefs(
+    Expression<bool> Function($$MealsTableFilterComposer f) f,
+  ) {
+    final $$MealsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.meals,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MealsTableFilterComposer(
+            $db: $db,
+            $table: $db.meals,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> foodsRefs(
+    Expression<bool> Function($$FoodsTableFilterComposer f) f,
+  ) {
+    final $$FoodsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.foods,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$FoodsTableFilterComposer(
+            $db: $db,
+            $table: $db.foods,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> measurementsRefs(
+    Expression<bool> Function($$MeasurementsTableFilterComposer f) f,
+  ) {
+    final $$MeasurementsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.measurements,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MeasurementsTableFilterComposer(
+            $db: $db,
+            $table: $db.measurements,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> uploadsRefs(
+    Expression<bool> Function($$UploadsTableFilterComposer f) f,
+  ) {
+    final $$UploadsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.uploads,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UploadsTableFilterComposer(
+            $db: $db,
+            $table: $db.uploads,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> chatsRefs(
+    Expression<bool> Function($$ChatsTableFilterComposer f) f,
+  ) {
+    final $$ChatsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.chats,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ChatsTableFilterComposer(
+            $db: $db,
+            $table: $db.chats,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 
   Expression<bool> integrationsRefs(
     Expression<bool> Function($$IntegrationsTableFilterComposer f) f,
@@ -7796,6 +8096,156 @@ class $$UsersTableAnnotationComposer
   GeneratedColumn<String> get updatedAt =>
       $composableBuilder(column: $table.updatedAt, builder: (column) => column);
 
+  Expression<T> programsRefs<T extends Object>(
+    Expression<T> Function($$ProgramsTableAnnotationComposer a) f,
+  ) {
+    final $$ProgramsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.programs,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ProgramsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.programs,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> mealsRefs<T extends Object>(
+    Expression<T> Function($$MealsTableAnnotationComposer a) f,
+  ) {
+    final $$MealsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.meals,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MealsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.meals,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> foodsRefs<T extends Object>(
+    Expression<T> Function($$FoodsTableAnnotationComposer a) f,
+  ) {
+    final $$FoodsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.foods,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$FoodsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.foods,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> measurementsRefs<T extends Object>(
+    Expression<T> Function($$MeasurementsTableAnnotationComposer a) f,
+  ) {
+    final $$MeasurementsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.measurements,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MeasurementsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.measurements,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> uploadsRefs<T extends Object>(
+    Expression<T> Function($$UploadsTableAnnotationComposer a) f,
+  ) {
+    final $$UploadsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.uploads,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UploadsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.uploads,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> chatsRefs<T extends Object>(
+    Expression<T> Function($$ChatsTableAnnotationComposer a) f,
+  ) {
+    final $$ChatsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.chats,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ChatsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.chats,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
   Expression<T> integrationsRefs<T extends Object>(
     Expression<T> Function($$IntegrationsTableAnnotationComposer a) f,
   ) {
@@ -7835,7 +8285,15 @@ class $$UsersTableTableManager
           $$UsersTableUpdateCompanionBuilder,
           (User, $$UsersTableReferences),
           User,
-          PrefetchHooks Function({bool integrationsRefs})
+          PrefetchHooks Function({
+            bool programsRefs,
+            bool mealsRefs,
+            bool foodsRefs,
+            bool measurementsRefs,
+            bool uploadsRefs,
+            bool chatsRefs,
+            bool integrationsRefs,
+          })
         > {
   $$UsersTableTableManager(_$AppDatabase db, $UsersTable table)
     : super(
@@ -7910,31 +8368,145 @@ class $$UsersTableTableManager
                     (e.readTable(table), $$UsersTableReferences(db, table, e)),
               )
               .toList(),
-          prefetchHooksCallback: ({integrationsRefs = false}) {
-            return PrefetchHooks(
-              db: db,
-              explicitlyWatchedTables: [if (integrationsRefs) db.integrations],
-              addJoins: null,
-              getPrefetchedDataCallback: (items) async {
-                return [
-                  if (integrationsRefs)
-                    await $_getPrefetchedData<User, $UsersTable, Integration>(
-                      currentTable: table,
-                      referencedTable: $$UsersTableReferences
-                          ._integrationsRefsTable(db),
-                      managerFromTypedResult: (p0) => $$UsersTableReferences(
-                        db,
-                        table,
-                        p0,
-                      ).integrationsRefs,
-                      referencedItemsForCurrentItem: (item, referencedItems) =>
-                          referencedItems.where((e) => e.userId == item.userId),
-                      typedResults: items,
-                    ),
-                ];
+          prefetchHooksCallback:
+              ({
+                programsRefs = false,
+                mealsRefs = false,
+                foodsRefs = false,
+                measurementsRefs = false,
+                uploadsRefs = false,
+                chatsRefs = false,
+                integrationsRefs = false,
+              }) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (programsRefs) db.programs,
+                    if (mealsRefs) db.meals,
+                    if (foodsRefs) db.foods,
+                    if (measurementsRefs) db.measurements,
+                    if (uploadsRefs) db.uploads,
+                    if (chatsRefs) db.chats,
+                    if (integrationsRefs) db.integrations,
+                  ],
+                  addJoins: null,
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (programsRefs)
+                        await $_getPrefetchedData<User, $UsersTable, Program>(
+                          currentTable: table,
+                          referencedTable: $$UsersTableReferences
+                              ._programsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$UsersTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).programsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.userId == item.userId,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (mealsRefs)
+                        await $_getPrefetchedData<User, $UsersTable, Meal>(
+                          currentTable: table,
+                          referencedTable: $$UsersTableReferences
+                              ._mealsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$UsersTableReferences(db, table, p0).mealsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.userId == item.userId,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (foodsRefs)
+                        await $_getPrefetchedData<User, $UsersTable, Food>(
+                          currentTable: table,
+                          referencedTable: $$UsersTableReferences
+                              ._foodsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$UsersTableReferences(db, table, p0).foodsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.userId == item.userId,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (measurementsRefs)
+                        await $_getPrefetchedData<
+                          User,
+                          $UsersTable,
+                          Measurement
+                        >(
+                          currentTable: table,
+                          referencedTable: $$UsersTableReferences
+                              ._measurementsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$UsersTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).measurementsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.userId == item.userId,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (uploadsRefs)
+                        await $_getPrefetchedData<User, $UsersTable, Upload>(
+                          currentTable: table,
+                          referencedTable: $$UsersTableReferences
+                              ._uploadsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$UsersTableReferences(db, table, p0).uploadsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.userId == item.userId,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (chatsRefs)
+                        await $_getPrefetchedData<User, $UsersTable, Chat>(
+                          currentTable: table,
+                          referencedTable: $$UsersTableReferences
+                              ._chatsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$UsersTableReferences(db, table, p0).chatsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.userId == item.userId,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (integrationsRefs)
+                        await $_getPrefetchedData<
+                          User,
+                          $UsersTable,
+                          Integration
+                        >(
+                          currentTable: table,
+                          referencedTable: $$UsersTableReferences
+                              ._integrationsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$UsersTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).integrationsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.userId == item.userId,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
               },
-            );
-          },
         ),
       );
 }
@@ -7951,7 +8523,15 @@ typedef $$UsersTableProcessedTableManager =
       $$UsersTableUpdateCompanionBuilder,
       (User, $$UsersTableReferences),
       User,
-      PrefetchHooks Function({bool integrationsRefs})
+      PrefetchHooks Function({
+        bool programsRefs,
+        bool mealsRefs,
+        bool foodsRefs,
+        bool measurementsRefs,
+        bool uploadsRefs,
+        bool chatsRefs,
+        bool integrationsRefs,
+      })
     >;
 typedef $$ProgramsTableCreateCompanionBuilder =
     ProgramsCompanion Function({
@@ -7976,6 +8556,48 @@ typedef $$ProgramsTableUpdateCompanionBuilder =
       Value<int> rowid,
     });
 
+final class $$ProgramsTableReferences
+    extends BaseReferences<_$AppDatabase, $ProgramsTable, Program> {
+  $$ProgramsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $UsersTable _userIdTable(_$AppDatabase db) => db.users.createAlias(
+    $_aliasNameGenerator(db.programs.userId, db.users.userId),
+  );
+
+  $$UsersTableProcessedTableManager get userId {
+    final $_column = $_itemColumn<String>('user_id')!;
+
+    final manager = $$UsersTableTableManager(
+      $_db,
+      $_db.users,
+    ).filter((f) => f.userId.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_userIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static MultiTypedResultKey<$DaysTable, List<Day>> _daysRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.days,
+    aliasName: $_aliasNameGenerator(db.programs.programId, db.days.programId),
+  );
+
+  $$DaysTableProcessedTableManager get daysRefs {
+    final manager = $$DaysTableTableManager($_db, $_db.days).filter(
+      (f) =>
+          f.programId.programId.sqlEquals($_itemColumn<String>('program_id')!),
+    );
+
+    final cache = $_typedResult.readTableOrNull(_daysRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
 class $$ProgramsTableFilterComposer
     extends Composer<_$AppDatabase, $ProgramsTable> {
   $$ProgramsTableFilterComposer({
@@ -7987,11 +8609,6 @@ class $$ProgramsTableFilterComposer
   });
   ColumnFilters<String> get programId => $composableBuilder(
     column: $table.programId,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get userId => $composableBuilder(
-    column: $table.userId,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -8019,6 +8636,54 @@ class $$ProgramsTableFilterComposer
     column: $table.isActive,
     builder: (column) => ColumnFilters(column),
   );
+
+  $$UsersTableFilterComposer get userId {
+    final $$UsersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.users,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UsersTableFilterComposer(
+            $db: $db,
+            $table: $db.users,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<bool> daysRefs(
+    Expression<bool> Function($$DaysTableFilterComposer f) f,
+  ) {
+    final $$DaysTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.programId,
+      referencedTable: $db.days,
+      getReferencedColumn: (t) => t.programId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DaysTableFilterComposer(
+            $db: $db,
+            $table: $db.days,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$ProgramsTableOrderingComposer
@@ -8032,11 +8697,6 @@ class $$ProgramsTableOrderingComposer
   });
   ColumnOrderings<String> get programId => $composableBuilder(
     column: $table.programId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get userId => $composableBuilder(
-    column: $table.userId,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -8064,6 +8724,29 @@ class $$ProgramsTableOrderingComposer
     column: $table.isActive,
     builder: (column) => ColumnOrderings(column),
   );
+
+  $$UsersTableOrderingComposer get userId {
+    final $$UsersTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.users,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UsersTableOrderingComposer(
+            $db: $db,
+            $table: $db.users,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$ProgramsTableAnnotationComposer
@@ -8077,9 +8760,6 @@ class $$ProgramsTableAnnotationComposer
   });
   GeneratedColumn<String> get programId =>
       $composableBuilder(column: $table.programId, builder: (column) => column);
-
-  GeneratedColumn<String> get userId =>
-      $composableBuilder(column: $table.userId, builder: (column) => column);
 
   GeneratedColumn<String> get name =>
       $composableBuilder(column: $table.name, builder: (column) => column);
@@ -8097,6 +8777,54 @@ class $$ProgramsTableAnnotationComposer
 
   GeneratedColumn<bool> get isActive =>
       $composableBuilder(column: $table.isActive, builder: (column) => column);
+
+  $$UsersTableAnnotationComposer get userId {
+    final $$UsersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.users,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UsersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.users,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<T> daysRefs<T extends Object>(
+    Expression<T> Function($$DaysTableAnnotationComposer a) f,
+  ) {
+    final $$DaysTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.programId,
+      referencedTable: $db.days,
+      getReferencedColumn: (t) => t.programId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DaysTableAnnotationComposer(
+            $db: $db,
+            $table: $db.days,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$ProgramsTableTableManager
@@ -8110,9 +8838,9 @@ class $$ProgramsTableTableManager
           $$ProgramsTableAnnotationComposer,
           $$ProgramsTableCreateCompanionBuilder,
           $$ProgramsTableUpdateCompanionBuilder,
-          (Program, BaseReferences<_$AppDatabase, $ProgramsTable, Program>),
+          (Program, $$ProgramsTableReferences),
           Program,
-          PrefetchHooks Function()
+          PrefetchHooks Function({bool userId, bool daysRefs})
         > {
   $$ProgramsTableTableManager(_$AppDatabase db, $ProgramsTable table)
     : super(
@@ -8166,9 +8894,69 @@ class $$ProgramsTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$ProgramsTableReferences(db, table, e),
+                ),
+              )
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback: ({userId = false, daysRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [if (daysRefs) db.days],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (userId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.userId,
+                                referencedTable: $$ProgramsTableReferences
+                                    ._userIdTable(db),
+                                referencedColumn: $$ProgramsTableReferences
+                                    ._userIdTable(db)
+                                    .userId,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (daysRefs)
+                    await $_getPrefetchedData<Program, $ProgramsTable, Day>(
+                      currentTable: table,
+                      referencedTable: $$ProgramsTableReferences._daysRefsTable(
+                        db,
+                      ),
+                      managerFromTypedResult: (p0) =>
+                          $$ProgramsTableReferences(db, table, p0).daysRefs,
+                      referencedItemsForCurrentItem: (item, referencedItems) =>
+                          referencedItems.where(
+                            (e) => e.programId == item.programId,
+                          ),
+                      typedResults: items,
+                    ),
+                ];
+              },
+            );
+          },
         ),
       );
 }
@@ -8183,9 +8971,9 @@ typedef $$ProgramsTableProcessedTableManager =
       $$ProgramsTableAnnotationComposer,
       $$ProgramsTableCreateCompanionBuilder,
       $$ProgramsTableUpdateCompanionBuilder,
-      (Program, BaseReferences<_$AppDatabase, $ProgramsTable, Program>),
+      (Program, $$ProgramsTableReferences),
       Program,
-      PrefetchHooks Function()
+      PrefetchHooks Function({bool userId, bool daysRefs})
     >;
 typedef $$DaysTableCreateCompanionBuilder =
     DaysCompanion Function({
@@ -8208,6 +8996,67 @@ typedef $$DaysTableUpdateCompanionBuilder =
       Value<int> rowid,
     });
 
+final class $$DaysTableReferences
+    extends BaseReferences<_$AppDatabase, $DaysTable, Day> {
+  $$DaysTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $ProgramsTable _programIdTable(_$AppDatabase db) =>
+      db.programs.createAlias(
+        $_aliasNameGenerator(db.days.programId, db.programs.programId),
+      );
+
+  $$ProgramsTableProcessedTableManager get programId {
+    final $_column = $_itemColumn<String>('program_id')!;
+
+    final manager = $$ProgramsTableTableManager(
+      $_db,
+      $_db.programs,
+    ).filter((f) => f.programId.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_programIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static MultiTypedResultKey<$DayExercisesTable, List<DayExercise>>
+  _dayExercisesRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.dayExercises,
+    aliasName: $_aliasNameGenerator(db.days.dayId, db.dayExercises.dayId),
+  );
+
+  $$DayExercisesTableProcessedTableManager get dayExercisesRefs {
+    final manager = $$DayExercisesTableTableManager(
+      $_db,
+      $_db.dayExercises,
+    ).filter((f) => f.dayId.dayId.sqlEquals($_itemColumn<String>('day_id')!));
+
+    final cache = $_typedResult.readTableOrNull(_dayExercisesRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$SetsTable, List<SetEntry>> _setsRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.sets,
+    aliasName: $_aliasNameGenerator(db.days.dayId, db.sets.dayId),
+  );
+
+  $$SetsTableProcessedTableManager get setsRefs {
+    final manager = $$SetsTableTableManager(
+      $_db,
+      $_db.sets,
+    ).filter((f) => f.dayId.dayId.sqlEquals($_itemColumn<String>('day_id')!));
+
+    final cache = $_typedResult.readTableOrNull(_setsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
 class $$DaysTableFilterComposer extends Composer<_$AppDatabase, $DaysTable> {
   $$DaysTableFilterComposer({
     required super.$db,
@@ -8218,11 +9067,6 @@ class $$DaysTableFilterComposer extends Composer<_$AppDatabase, $DaysTable> {
   });
   ColumnFilters<String> get dayId => $composableBuilder(
     column: $table.dayId,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get programId => $composableBuilder(
-    column: $table.programId,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -8245,6 +9089,79 @@ class $$DaysTableFilterComposer extends Composer<_$AppDatabase, $DaysTable> {
     column: $table.updatedAt,
     builder: (column) => ColumnFilters(column),
   );
+
+  $$ProgramsTableFilterComposer get programId {
+    final $$ProgramsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.programId,
+      referencedTable: $db.programs,
+      getReferencedColumn: (t) => t.programId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ProgramsTableFilterComposer(
+            $db: $db,
+            $table: $db.programs,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<bool> dayExercisesRefs(
+    Expression<bool> Function($$DayExercisesTableFilterComposer f) f,
+  ) {
+    final $$DayExercisesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.dayId,
+      referencedTable: $db.dayExercises,
+      getReferencedColumn: (t) => t.dayId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DayExercisesTableFilterComposer(
+            $db: $db,
+            $table: $db.dayExercises,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> setsRefs(
+    Expression<bool> Function($$SetsTableFilterComposer f) f,
+  ) {
+    final $$SetsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.dayId,
+      referencedTable: $db.sets,
+      getReferencedColumn: (t) => t.dayId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SetsTableFilterComposer(
+            $db: $db,
+            $table: $db.sets,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$DaysTableOrderingComposer extends Composer<_$AppDatabase, $DaysTable> {
@@ -8257,11 +9174,6 @@ class $$DaysTableOrderingComposer extends Composer<_$AppDatabase, $DaysTable> {
   });
   ColumnOrderings<String> get dayId => $composableBuilder(
     column: $table.dayId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get programId => $composableBuilder(
-    column: $table.programId,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -8284,6 +9196,29 @@ class $$DaysTableOrderingComposer extends Composer<_$AppDatabase, $DaysTable> {
     column: $table.updatedAt,
     builder: (column) => ColumnOrderings(column),
   );
+
+  $$ProgramsTableOrderingComposer get programId {
+    final $$ProgramsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.programId,
+      referencedTable: $db.programs,
+      getReferencedColumn: (t) => t.programId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ProgramsTableOrderingComposer(
+            $db: $db,
+            $table: $db.programs,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$DaysTableAnnotationComposer
@@ -8298,9 +9233,6 @@ class $$DaysTableAnnotationComposer
   GeneratedColumn<String> get dayId =>
       $composableBuilder(column: $table.dayId, builder: (column) => column);
 
-  GeneratedColumn<String> get programId =>
-      $composableBuilder(column: $table.programId, builder: (column) => column);
-
   GeneratedColumn<int> get dayNumber =>
       $composableBuilder(column: $table.dayNumber, builder: (column) => column);
 
@@ -8312,6 +9244,79 @@ class $$DaysTableAnnotationComposer
 
   GeneratedColumn<String> get updatedAt =>
       $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  $$ProgramsTableAnnotationComposer get programId {
+    final $$ProgramsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.programId,
+      referencedTable: $db.programs,
+      getReferencedColumn: (t) => t.programId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ProgramsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.programs,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<T> dayExercisesRefs<T extends Object>(
+    Expression<T> Function($$DayExercisesTableAnnotationComposer a) f,
+  ) {
+    final $$DayExercisesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.dayId,
+      referencedTable: $db.dayExercises,
+      getReferencedColumn: (t) => t.dayId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DayExercisesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.dayExercises,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> setsRefs<T extends Object>(
+    Expression<T> Function($$SetsTableAnnotationComposer a) f,
+  ) {
+    final $$SetsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.dayId,
+      referencedTable: $db.sets,
+      getReferencedColumn: (t) => t.dayId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SetsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.sets,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$DaysTableTableManager
@@ -8325,9 +9330,13 @@ class $$DaysTableTableManager
           $$DaysTableAnnotationComposer,
           $$DaysTableCreateCompanionBuilder,
           $$DaysTableUpdateCompanionBuilder,
-          (Day, BaseReferences<_$AppDatabase, $DaysTable, Day>),
+          (Day, $$DaysTableReferences),
           Day,
-          PrefetchHooks Function()
+          PrefetchHooks Function({
+            bool programId,
+            bool dayExercisesRefs,
+            bool setsRefs,
+          })
         > {
   $$DaysTableTableManager(_$AppDatabase db, $DaysTable table)
     : super(
@@ -8377,9 +9386,91 @@ class $$DaysTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) =>
+                    (e.readTable(table), $$DaysTableReferences(db, table, e)),
+              )
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback:
+              ({
+                programId = false,
+                dayExercisesRefs = false,
+                setsRefs = false,
+              }) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (dayExercisesRefs) db.dayExercises,
+                    if (setsRefs) db.sets,
+                  ],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (programId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.programId,
+                                    referencedTable: $$DaysTableReferences
+                                        ._programIdTable(db),
+                                    referencedColumn: $$DaysTableReferences
+                                        ._programIdTable(db)
+                                        .programId,
+                                  )
+                                  as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (dayExercisesRefs)
+                        await $_getPrefetchedData<Day, $DaysTable, DayExercise>(
+                          currentTable: table,
+                          referencedTable: $$DaysTableReferences
+                              ._dayExercisesRefsTable(db),
+                          managerFromTypedResult: (p0) => $$DaysTableReferences(
+                            db,
+                            table,
+                            p0,
+                          ).dayExercisesRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.dayId == item.dayId,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (setsRefs)
+                        await $_getPrefetchedData<Day, $DaysTable, SetEntry>(
+                          currentTable: table,
+                          referencedTable: $$DaysTableReferences._setsRefsTable(
+                            db,
+                          ),
+                          managerFromTypedResult: (p0) =>
+                              $$DaysTableReferences(db, table, p0).setsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.dayId == item.dayId,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
+              },
         ),
       );
 }
@@ -8394,9 +9485,13 @@ typedef $$DaysTableProcessedTableManager =
       $$DaysTableAnnotationComposer,
       $$DaysTableCreateCompanionBuilder,
       $$DaysTableUpdateCompanionBuilder,
-      (Day, BaseReferences<_$AppDatabase, $DaysTable, Day>),
+      (Day, $$DaysTableReferences),
       Day,
-      PrefetchHooks Function()
+      PrefetchHooks Function({
+        bool programId,
+        bool dayExercisesRefs,
+        bool setsRefs,
+      })
     >;
 typedef $$ExercisesTableCreateCompanionBuilder =
     ExercisesCompanion Function({
@@ -8428,6 +9523,57 @@ typedef $$ExercisesTableUpdateCompanionBuilder =
       Value<String> createdAt,
       Value<int> rowid,
     });
+
+final class $$ExercisesTableReferences
+    extends BaseReferences<_$AppDatabase, $ExercisesTable, Exercise> {
+  $$ExercisesTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static MultiTypedResultKey<$DayExercisesTable, List<DayExercise>>
+  _dayExercisesRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.dayExercises,
+    aliasName: $_aliasNameGenerator(
+      db.exercises.exerciseId,
+      db.dayExercises.exerciseId,
+    ),
+  );
+
+  $$DayExercisesTableProcessedTableManager get dayExercisesRefs {
+    final manager = $$DayExercisesTableTableManager($_db, $_db.dayExercises)
+        .filter(
+          (f) => f.exerciseId.exerciseId.sqlEquals(
+            $_itemColumn<String>('exercise_id')!,
+          ),
+        );
+
+    final cache = $_typedResult.readTableOrNull(_dayExercisesRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$SetsTable, List<SetEntry>> _setsRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.sets,
+    aliasName: $_aliasNameGenerator(
+      db.exercises.exerciseId,
+      db.sets.exerciseId,
+    ),
+  );
+
+  $$SetsTableProcessedTableManager get setsRefs {
+    final manager = $$SetsTableTableManager($_db, $_db.sets).filter(
+      (f) => f.exerciseId.exerciseId.sqlEquals(
+        $_itemColumn<String>('exercise_id')!,
+      ),
+    );
+
+    final cache = $_typedResult.readTableOrNull(_setsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
 
 class $$ExercisesTableFilterComposer
     extends Composer<_$AppDatabase, $ExercisesTable> {
@@ -8492,6 +9638,56 @@ class $$ExercisesTableFilterComposer
     column: $table.createdAt,
     builder: (column) => ColumnFilters(column),
   );
+
+  Expression<bool> dayExercisesRefs(
+    Expression<bool> Function($$DayExercisesTableFilterComposer f) f,
+  ) {
+    final $$DayExercisesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.exerciseId,
+      referencedTable: $db.dayExercises,
+      getReferencedColumn: (t) => t.exerciseId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DayExercisesTableFilterComposer(
+            $db: $db,
+            $table: $db.dayExercises,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> setsRefs(
+    Expression<bool> Function($$SetsTableFilterComposer f) f,
+  ) {
+    final $$SetsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.exerciseId,
+      referencedTable: $db.sets,
+      getReferencedColumn: (t) => t.exerciseId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SetsTableFilterComposer(
+            $db: $db,
+            $table: $db.sets,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$ExercisesTableOrderingComposer
@@ -8612,6 +9808,56 @@ class $$ExercisesTableAnnotationComposer
 
   GeneratedColumn<String> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  Expression<T> dayExercisesRefs<T extends Object>(
+    Expression<T> Function($$DayExercisesTableAnnotationComposer a) f,
+  ) {
+    final $$DayExercisesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.exerciseId,
+      referencedTable: $db.dayExercises,
+      getReferencedColumn: (t) => t.exerciseId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DayExercisesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.dayExercises,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> setsRefs<T extends Object>(
+    Expression<T> Function($$SetsTableAnnotationComposer a) f,
+  ) {
+    final $$SetsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.exerciseId,
+      referencedTable: $db.sets,
+      getReferencedColumn: (t) => t.exerciseId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SetsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.sets,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$ExercisesTableTableManager
@@ -8625,9 +9871,9 @@ class $$ExercisesTableTableManager
           $$ExercisesTableAnnotationComposer,
           $$ExercisesTableCreateCompanionBuilder,
           $$ExercisesTableUpdateCompanionBuilder,
-          (Exercise, BaseReferences<_$AppDatabase, $ExercisesTable, Exercise>),
+          (Exercise, $$ExercisesTableReferences),
           Exercise,
-          PrefetchHooks Function()
+          PrefetchHooks Function({bool dayExercisesRefs, bool setsRefs})
         > {
   $$ExercisesTableTableManager(_$AppDatabase db, $ExercisesTable table)
     : super(
@@ -8697,9 +9943,70 @@ class $$ExercisesTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$ExercisesTableReferences(db, table, e),
+                ),
+              )
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback:
+              ({dayExercisesRefs = false, setsRefs = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (dayExercisesRefs) db.dayExercises,
+                    if (setsRefs) db.sets,
+                  ],
+                  addJoins: null,
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (dayExercisesRefs)
+                        await $_getPrefetchedData<
+                          Exercise,
+                          $ExercisesTable,
+                          DayExercise
+                        >(
+                          currentTable: table,
+                          referencedTable: $$ExercisesTableReferences
+                              ._dayExercisesRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$ExercisesTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).dayExercisesRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.exerciseId == item.exerciseId,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (setsRefs)
+                        await $_getPrefetchedData<
+                          Exercise,
+                          $ExercisesTable,
+                          SetEntry
+                        >(
+                          currentTable: table,
+                          referencedTable: $$ExercisesTableReferences
+                              ._setsRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$ExercisesTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).setsRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.exerciseId == item.exerciseId,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
+              },
         ),
       );
 }
@@ -8714,9 +10021,9 @@ typedef $$ExercisesTableProcessedTableManager =
       $$ExercisesTableAnnotationComposer,
       $$ExercisesTableCreateCompanionBuilder,
       $$ExercisesTableUpdateCompanionBuilder,
-      (Exercise, BaseReferences<_$AppDatabase, $ExercisesTable, Exercise>),
+      (Exercise, $$ExercisesTableReferences),
       Exercise,
-      PrefetchHooks Function()
+      PrefetchHooks Function({bool dayExercisesRefs, bool setsRefs})
     >;
 typedef $$DayExercisesTableCreateCompanionBuilder =
     DayExercisesCompanion Function({
@@ -8737,6 +10044,51 @@ typedef $$DayExercisesTableUpdateCompanionBuilder =
       Value<int> rowid,
     });
 
+final class $$DayExercisesTableReferences
+    extends BaseReferences<_$AppDatabase, $DayExercisesTable, DayExercise> {
+  $$DayExercisesTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $DaysTable _dayIdTable(_$AppDatabase db) => db.days.createAlias(
+    $_aliasNameGenerator(db.dayExercises.dayId, db.days.dayId),
+  );
+
+  $$DaysTableProcessedTableManager get dayId {
+    final $_column = $_itemColumn<String>('day_id')!;
+
+    final manager = $$DaysTableTableManager(
+      $_db,
+      $_db.days,
+    ).filter((f) => f.dayId.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_dayIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $ExercisesTable _exerciseIdTable(_$AppDatabase db) =>
+      db.exercises.createAlias(
+        $_aliasNameGenerator(
+          db.dayExercises.exerciseId,
+          db.exercises.exerciseId,
+        ),
+      );
+
+  $$ExercisesTableProcessedTableManager get exerciseId {
+    final $_column = $_itemColumn<String>('exercise_id')!;
+
+    final manager = $$ExercisesTableTableManager(
+      $_db,
+      $_db.exercises,
+    ).filter((f) => f.exerciseId.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_exerciseIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
 class $$DayExercisesTableFilterComposer
     extends Composer<_$AppDatabase, $DayExercisesTable> {
   $$DayExercisesTableFilterComposer({
@@ -8751,16 +10103,6 @@ class $$DayExercisesTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get dayId => $composableBuilder(
-    column: $table.dayId,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get exerciseId => $composableBuilder(
-    column: $table.exerciseId,
-    builder: (column) => ColumnFilters(column),
-  );
-
   ColumnFilters<int> get exerciseOrder => $composableBuilder(
     column: $table.exerciseOrder,
     builder: (column) => ColumnFilters(column),
@@ -8770,6 +10112,52 @@ class $$DayExercisesTableFilterComposer
     column: $table.createdAt,
     builder: (column) => ColumnFilters(column),
   );
+
+  $$DaysTableFilterComposer get dayId {
+    final $$DaysTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.dayId,
+      referencedTable: $db.days,
+      getReferencedColumn: (t) => t.dayId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DaysTableFilterComposer(
+            $db: $db,
+            $table: $db.days,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$ExercisesTableFilterComposer get exerciseId {
+    final $$ExercisesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.exerciseId,
+      referencedTable: $db.exercises,
+      getReferencedColumn: (t) => t.exerciseId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ExercisesTableFilterComposer(
+            $db: $db,
+            $table: $db.exercises,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$DayExercisesTableOrderingComposer
@@ -8786,16 +10174,6 @@ class $$DayExercisesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get dayId => $composableBuilder(
-    column: $table.dayId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get exerciseId => $composableBuilder(
-    column: $table.exerciseId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
   ColumnOrderings<int> get exerciseOrder => $composableBuilder(
     column: $table.exerciseOrder,
     builder: (column) => ColumnOrderings(column),
@@ -8805,6 +10183,52 @@ class $$DayExercisesTableOrderingComposer
     column: $table.createdAt,
     builder: (column) => ColumnOrderings(column),
   );
+
+  $$DaysTableOrderingComposer get dayId {
+    final $$DaysTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.dayId,
+      referencedTable: $db.days,
+      getReferencedColumn: (t) => t.dayId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DaysTableOrderingComposer(
+            $db: $db,
+            $table: $db.days,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$ExercisesTableOrderingComposer get exerciseId {
+    final $$ExercisesTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.exerciseId,
+      referencedTable: $db.exercises,
+      getReferencedColumn: (t) => t.exerciseId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ExercisesTableOrderingComposer(
+            $db: $db,
+            $table: $db.exercises,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$DayExercisesTableAnnotationComposer
@@ -8819,14 +10243,6 @@ class $$DayExercisesTableAnnotationComposer
   GeneratedColumn<String> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<String> get dayId =>
-      $composableBuilder(column: $table.dayId, builder: (column) => column);
-
-  GeneratedColumn<String> get exerciseId => $composableBuilder(
-    column: $table.exerciseId,
-    builder: (column) => column,
-  );
-
   GeneratedColumn<int> get exerciseOrder => $composableBuilder(
     column: $table.exerciseOrder,
     builder: (column) => column,
@@ -8834,6 +10250,52 @@ class $$DayExercisesTableAnnotationComposer
 
   GeneratedColumn<String> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  $$DaysTableAnnotationComposer get dayId {
+    final $$DaysTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.dayId,
+      referencedTable: $db.days,
+      getReferencedColumn: (t) => t.dayId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DaysTableAnnotationComposer(
+            $db: $db,
+            $table: $db.days,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$ExercisesTableAnnotationComposer get exerciseId {
+    final $$ExercisesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.exerciseId,
+      referencedTable: $db.exercises,
+      getReferencedColumn: (t) => t.exerciseId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ExercisesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.exercises,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$DayExercisesTableTableManager
@@ -8847,12 +10309,9 @@ class $$DayExercisesTableTableManager
           $$DayExercisesTableAnnotationComposer,
           $$DayExercisesTableCreateCompanionBuilder,
           $$DayExercisesTableUpdateCompanionBuilder,
-          (
-            DayExercise,
-            BaseReferences<_$AppDatabase, $DayExercisesTable, DayExercise>,
-          ),
+          (DayExercise, $$DayExercisesTableReferences),
           DayExercise,
-          PrefetchHooks Function()
+          PrefetchHooks Function({bool dayId, bool exerciseId})
         > {
   $$DayExercisesTableTableManager(_$AppDatabase db, $DayExercisesTable table)
     : super(
@@ -8898,9 +10357,67 @@ class $$DayExercisesTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$DayExercisesTableReferences(db, table, e),
+                ),
+              )
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback: ({dayId = false, exerciseId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (dayId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.dayId,
+                                referencedTable: $$DayExercisesTableReferences
+                                    ._dayIdTable(db),
+                                referencedColumn: $$DayExercisesTableReferences
+                                    ._dayIdTable(db)
+                                    .dayId,
+                              )
+                              as T;
+                    }
+                    if (exerciseId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.exerciseId,
+                                referencedTable: $$DayExercisesTableReferences
+                                    ._exerciseIdTable(db),
+                                referencedColumn: $$DayExercisesTableReferences
+                                    ._exerciseIdTable(db)
+                                    .exerciseId,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
         ),
       );
 }
@@ -8915,12 +10432,9 @@ typedef $$DayExercisesTableProcessedTableManager =
       $$DayExercisesTableAnnotationComposer,
       $$DayExercisesTableCreateCompanionBuilder,
       $$DayExercisesTableUpdateCompanionBuilder,
-      (
-        DayExercise,
-        BaseReferences<_$AppDatabase, $DayExercisesTable, DayExercise>,
-      ),
+      (DayExercise, $$DayExercisesTableReferences),
       DayExercise,
-      PrefetchHooks Function()
+      PrefetchHooks Function({bool dayId, bool exerciseId})
     >;
 typedef $$SetsTableCreateCompanionBuilder =
     SetsCompanion Function({
@@ -8951,6 +10465,47 @@ typedef $$SetsTableUpdateCompanionBuilder =
       Value<int> rowid,
     });
 
+final class $$SetsTableReferences
+    extends BaseReferences<_$AppDatabase, $SetsTable, SetEntry> {
+  $$SetsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $ExercisesTable _exerciseIdTable(_$AppDatabase db) =>
+      db.exercises.createAlias(
+        $_aliasNameGenerator(db.sets.exerciseId, db.exercises.exerciseId),
+      );
+
+  $$ExercisesTableProcessedTableManager get exerciseId {
+    final $_column = $_itemColumn<String>('exercise_id')!;
+
+    final manager = $$ExercisesTableTableManager(
+      $_db,
+      $_db.exercises,
+    ).filter((f) => f.exerciseId.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_exerciseIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $DaysTable _dayIdTable(_$AppDatabase db) =>
+      db.days.createAlias($_aliasNameGenerator(db.sets.dayId, db.days.dayId));
+
+  $$DaysTableProcessedTableManager get dayId {
+    final $_column = $_itemColumn<String>('day_id')!;
+
+    final manager = $$DaysTableTableManager(
+      $_db,
+      $_db.days,
+    ).filter((f) => f.dayId.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_dayIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
 class $$SetsTableFilterComposer extends Composer<_$AppDatabase, $SetsTable> {
   $$SetsTableFilterComposer({
     required super.$db,
@@ -8961,16 +10516,6 @@ class $$SetsTableFilterComposer extends Composer<_$AppDatabase, $SetsTable> {
   });
   ColumnFilters<String> get setId => $composableBuilder(
     column: $table.setId,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get exerciseId => $composableBuilder(
-    column: $table.exerciseId,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get dayId => $composableBuilder(
-    column: $table.dayId,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -9008,6 +10553,52 @@ class $$SetsTableFilterComposer extends Composer<_$AppDatabase, $SetsTable> {
     column: $table.syncedToBackend,
     builder: (column) => ColumnFilters(column),
   );
+
+  $$ExercisesTableFilterComposer get exerciseId {
+    final $$ExercisesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.exerciseId,
+      referencedTable: $db.exercises,
+      getReferencedColumn: (t) => t.exerciseId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ExercisesTableFilterComposer(
+            $db: $db,
+            $table: $db.exercises,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$DaysTableFilterComposer get dayId {
+    final $$DaysTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.dayId,
+      referencedTable: $db.days,
+      getReferencedColumn: (t) => t.dayId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DaysTableFilterComposer(
+            $db: $db,
+            $table: $db.days,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$SetsTableOrderingComposer extends Composer<_$AppDatabase, $SetsTable> {
@@ -9020,16 +10611,6 @@ class $$SetsTableOrderingComposer extends Composer<_$AppDatabase, $SetsTable> {
   });
   ColumnOrderings<String> get setId => $composableBuilder(
     column: $table.setId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get exerciseId => $composableBuilder(
-    column: $table.exerciseId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get dayId => $composableBuilder(
-    column: $table.dayId,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -9067,6 +10648,52 @@ class $$SetsTableOrderingComposer extends Composer<_$AppDatabase, $SetsTable> {
     column: $table.syncedToBackend,
     builder: (column) => ColumnOrderings(column),
   );
+
+  $$ExercisesTableOrderingComposer get exerciseId {
+    final $$ExercisesTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.exerciseId,
+      referencedTable: $db.exercises,
+      getReferencedColumn: (t) => t.exerciseId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ExercisesTableOrderingComposer(
+            $db: $db,
+            $table: $db.exercises,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$DaysTableOrderingComposer get dayId {
+    final $$DaysTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.dayId,
+      referencedTable: $db.days,
+      getReferencedColumn: (t) => t.dayId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DaysTableOrderingComposer(
+            $db: $db,
+            $table: $db.days,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$SetsTableAnnotationComposer
@@ -9080,14 +10707,6 @@ class $$SetsTableAnnotationComposer
   });
   GeneratedColumn<String> get setId =>
       $composableBuilder(column: $table.setId, builder: (column) => column);
-
-  GeneratedColumn<String> get exerciseId => $composableBuilder(
-    column: $table.exerciseId,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get dayId =>
-      $composableBuilder(column: $table.dayId, builder: (column) => column);
 
   GeneratedColumn<int> get reps =>
       $composableBuilder(column: $table.reps, builder: (column) => column);
@@ -9115,6 +10734,52 @@ class $$SetsTableAnnotationComposer
     column: $table.syncedToBackend,
     builder: (column) => column,
   );
+
+  $$ExercisesTableAnnotationComposer get exerciseId {
+    final $$ExercisesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.exerciseId,
+      referencedTable: $db.exercises,
+      getReferencedColumn: (t) => t.exerciseId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ExercisesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.exercises,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$DaysTableAnnotationComposer get dayId {
+    final $$DaysTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.dayId,
+      referencedTable: $db.days,
+      getReferencedColumn: (t) => t.dayId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$DaysTableAnnotationComposer(
+            $db: $db,
+            $table: $db.days,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$SetsTableTableManager
@@ -9128,9 +10793,9 @@ class $$SetsTableTableManager
           $$SetsTableAnnotationComposer,
           $$SetsTableCreateCompanionBuilder,
           $$SetsTableUpdateCompanionBuilder,
-          (SetEntry, BaseReferences<_$AppDatabase, $SetsTable, SetEntry>),
+          (SetEntry, $$SetsTableReferences),
           SetEntry,
-          PrefetchHooks Function()
+          PrefetchHooks Function({bool exerciseId, bool dayId})
         > {
   $$SetsTableTableManager(_$AppDatabase db, $SetsTable table)
     : super(
@@ -9196,9 +10861,65 @@ class $$SetsTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) =>
+                    (e.readTable(table), $$SetsTableReferences(db, table, e)),
+              )
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback: ({exerciseId = false, dayId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (exerciseId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.exerciseId,
+                                referencedTable: $$SetsTableReferences
+                                    ._exerciseIdTable(db),
+                                referencedColumn: $$SetsTableReferences
+                                    ._exerciseIdTable(db)
+                                    .exerciseId,
+                              )
+                              as T;
+                    }
+                    if (dayId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.dayId,
+                                referencedTable: $$SetsTableReferences
+                                    ._dayIdTable(db),
+                                referencedColumn: $$SetsTableReferences
+                                    ._dayIdTable(db)
+                                    .dayId,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
         ),
       );
 }
@@ -9213,9 +10934,9 @@ typedef $$SetsTableProcessedTableManager =
       $$SetsTableAnnotationComposer,
       $$SetsTableCreateCompanionBuilder,
       $$SetsTableUpdateCompanionBuilder,
-      (SetEntry, BaseReferences<_$AppDatabase, $SetsTable, SetEntry>),
+      (SetEntry, $$SetsTableReferences),
       SetEntry,
-      PrefetchHooks Function()
+      PrefetchHooks Function({bool exerciseId, bool dayId})
     >;
 typedef $$MealsTableCreateCompanionBuilder =
     MealsCompanion Function({
@@ -9246,6 +10967,46 @@ typedef $$MealsTableUpdateCompanionBuilder =
       Value<int> rowid,
     });
 
+final class $$MealsTableReferences
+    extends BaseReferences<_$AppDatabase, $MealsTable, Meal> {
+  $$MealsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $UsersTable _userIdTable(_$AppDatabase db) => db.users.createAlias(
+    $_aliasNameGenerator(db.meals.userId, db.users.userId),
+  );
+
+  $$UsersTableProcessedTableManager get userId {
+    final $_column = $_itemColumn<String>('user_id')!;
+
+    final manager = $$UsersTableTableManager(
+      $_db,
+      $_db.users,
+    ).filter((f) => f.userId.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_userIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static MultiTypedResultKey<$MealFoodsTable, List<MealFood>>
+  _mealFoodsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.mealFoods,
+    aliasName: $_aliasNameGenerator(db.meals.mealId, db.mealFoods.mealId),
+  );
+
+  $$MealFoodsTableProcessedTableManager get mealFoodsRefs {
+    final manager = $$MealFoodsTableTableManager($_db, $_db.mealFoods).filter(
+      (f) => f.mealId.mealId.sqlEquals($_itemColumn<String>('meal_id')!),
+    );
+
+    final cache = $_typedResult.readTableOrNull(_mealFoodsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
 class $$MealsTableFilterComposer extends Composer<_$AppDatabase, $MealsTable> {
   $$MealsTableFilterComposer({
     required super.$db,
@@ -9256,11 +11017,6 @@ class $$MealsTableFilterComposer extends Composer<_$AppDatabase, $MealsTable> {
   });
   ColumnFilters<String> get mealId => $composableBuilder(
     column: $table.mealId,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get userId => $composableBuilder(
-    column: $table.userId,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -9303,6 +11059,54 @@ class $$MealsTableFilterComposer extends Composer<_$AppDatabase, $MealsTable> {
     column: $table.syncedToBackend,
     builder: (column) => ColumnFilters(column),
   );
+
+  $$UsersTableFilterComposer get userId {
+    final $$UsersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.users,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UsersTableFilterComposer(
+            $db: $db,
+            $table: $db.users,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<bool> mealFoodsRefs(
+    Expression<bool> Function($$MealFoodsTableFilterComposer f) f,
+  ) {
+    final $$MealFoodsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.mealId,
+      referencedTable: $db.mealFoods,
+      getReferencedColumn: (t) => t.mealId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MealFoodsTableFilterComposer(
+            $db: $db,
+            $table: $db.mealFoods,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$MealsTableOrderingComposer
@@ -9316,11 +11120,6 @@ class $$MealsTableOrderingComposer
   });
   ColumnOrderings<String> get mealId => $composableBuilder(
     column: $table.mealId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get userId => $composableBuilder(
-    column: $table.userId,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -9363,6 +11162,29 @@ class $$MealsTableOrderingComposer
     column: $table.syncedToBackend,
     builder: (column) => ColumnOrderings(column),
   );
+
+  $$UsersTableOrderingComposer get userId {
+    final $$UsersTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.users,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UsersTableOrderingComposer(
+            $db: $db,
+            $table: $db.users,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$MealsTableAnnotationComposer
@@ -9376,9 +11198,6 @@ class $$MealsTableAnnotationComposer
   });
   GeneratedColumn<String> get mealId =>
       $composableBuilder(column: $table.mealId, builder: (column) => column);
-
-  GeneratedColumn<String> get userId =>
-      $composableBuilder(column: $table.userId, builder: (column) => column);
 
   GeneratedColumn<String> get mealDate =>
       $composableBuilder(column: $table.mealDate, builder: (column) => column);
@@ -9411,6 +11230,54 @@ class $$MealsTableAnnotationComposer
     column: $table.syncedToBackend,
     builder: (column) => column,
   );
+
+  $$UsersTableAnnotationComposer get userId {
+    final $$UsersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.users,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UsersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.users,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<T> mealFoodsRefs<T extends Object>(
+    Expression<T> Function($$MealFoodsTableAnnotationComposer a) f,
+  ) {
+    final $$MealFoodsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.mealId,
+      referencedTable: $db.mealFoods,
+      getReferencedColumn: (t) => t.mealId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MealFoodsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.mealFoods,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$MealsTableTableManager
@@ -9424,9 +11291,9 @@ class $$MealsTableTableManager
           $$MealsTableAnnotationComposer,
           $$MealsTableCreateCompanionBuilder,
           $$MealsTableUpdateCompanionBuilder,
-          (Meal, BaseReferences<_$AppDatabase, $MealsTable, Meal>),
+          (Meal, $$MealsTableReferences),
           Meal,
-          PrefetchHooks Function()
+          PrefetchHooks Function({bool userId, bool mealFoodsRefs})
         > {
   $$MealsTableTableManager(_$AppDatabase db, $MealsTable table)
     : super(
@@ -9492,9 +11359,64 @@ class $$MealsTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) =>
+                    (e.readTable(table), $$MealsTableReferences(db, table, e)),
+              )
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback: ({userId = false, mealFoodsRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [if (mealFoodsRefs) db.mealFoods],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (userId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.userId,
+                                referencedTable: $$MealsTableReferences
+                                    ._userIdTable(db),
+                                referencedColumn: $$MealsTableReferences
+                                    ._userIdTable(db)
+                                    .userId,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (mealFoodsRefs)
+                    await $_getPrefetchedData<Meal, $MealsTable, MealFood>(
+                      currentTable: table,
+                      referencedTable: $$MealsTableReferences
+                          ._mealFoodsRefsTable(db),
+                      managerFromTypedResult: (p0) =>
+                          $$MealsTableReferences(db, table, p0).mealFoodsRefs,
+                      referencedItemsForCurrentItem: (item, referencedItems) =>
+                          referencedItems.where((e) => e.mealId == item.mealId),
+                      typedResults: items,
+                    ),
+                ];
+              },
+            );
+          },
         ),
       );
 }
@@ -9509,9 +11431,9 @@ typedef $$MealsTableProcessedTableManager =
       $$MealsTableAnnotationComposer,
       $$MealsTableCreateCompanionBuilder,
       $$MealsTableUpdateCompanionBuilder,
-      (Meal, BaseReferences<_$AppDatabase, $MealsTable, Meal>),
+      (Meal, $$MealsTableReferences),
       Meal,
-      PrefetchHooks Function()
+      PrefetchHooks Function({bool userId, bool mealFoodsRefs})
     >;
 typedef $$FoodsTableCreateCompanionBuilder =
     FoodsCompanion Function({
@@ -9539,6 +11461,46 @@ typedef $$FoodsTableUpdateCompanionBuilder =
       Value<String> createdAt,
       Value<int> rowid,
     });
+
+final class $$FoodsTableReferences
+    extends BaseReferences<_$AppDatabase, $FoodsTable, Food> {
+  $$FoodsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $UsersTable _userIdTable(_$AppDatabase db) => db.users.createAlias(
+    $_aliasNameGenerator(db.foods.userId, db.users.userId),
+  );
+
+  $$UsersTableProcessedTableManager? get userId {
+    final $_column = $_itemColumn<String>('user_id');
+    if ($_column == null) return null;
+    final manager = $$UsersTableTableManager(
+      $_db,
+      $_db.users,
+    ).filter((f) => f.userId.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_userIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static MultiTypedResultKey<$MealFoodsTable, List<MealFood>>
+  _mealFoodsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.mealFoods,
+    aliasName: $_aliasNameGenerator(db.foods.foodId, db.mealFoods.foodId),
+  );
+
+  $$MealFoodsTableProcessedTableManager get mealFoodsRefs {
+    final manager = $$MealFoodsTableTableManager($_db, $_db.mealFoods).filter(
+      (f) => f.foodId.foodId.sqlEquals($_itemColumn<String>('food_id')!),
+    );
+
+    final cache = $_typedResult.readTableOrNull(_mealFoodsRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
 
 class $$FoodsTableFilterComposer extends Composer<_$AppDatabase, $FoodsTable> {
   $$FoodsTableFilterComposer({
@@ -9583,15 +11545,58 @@ class $$FoodsTableFilterComposer extends Composer<_$AppDatabase, $FoodsTable> {
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get userId => $composableBuilder(
-    column: $table.userId,
-    builder: (column) => ColumnFilters(column),
-  );
-
   ColumnFilters<String> get createdAt => $composableBuilder(
     column: $table.createdAt,
     builder: (column) => ColumnFilters(column),
   );
+
+  $$UsersTableFilterComposer get userId {
+    final $$UsersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.users,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UsersTableFilterComposer(
+            $db: $db,
+            $table: $db.users,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<bool> mealFoodsRefs(
+    Expression<bool> Function($$MealFoodsTableFilterComposer f) f,
+  ) {
+    final $$MealFoodsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.foodId,
+      referencedTable: $db.mealFoods,
+      getReferencedColumn: (t) => t.foodId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MealFoodsTableFilterComposer(
+            $db: $db,
+            $table: $db.mealFoods,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$FoodsTableOrderingComposer
@@ -9638,15 +11643,33 @@ class $$FoodsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get userId => $composableBuilder(
-    column: $table.userId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
   ColumnOrderings<String> get createdAt => $composableBuilder(
     column: $table.createdAt,
     builder: (column) => ColumnOrderings(column),
   );
+
+  $$UsersTableOrderingComposer get userId {
+    final $$UsersTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.users,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UsersTableOrderingComposer(
+            $db: $db,
+            $table: $db.users,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$FoodsTableAnnotationComposer
@@ -9689,11 +11712,56 @@ class $$FoodsTableAnnotationComposer
     builder: (column) => column,
   );
 
-  GeneratedColumn<String> get userId =>
-      $composableBuilder(column: $table.userId, builder: (column) => column);
-
   GeneratedColumn<String> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  $$UsersTableAnnotationComposer get userId {
+    final $$UsersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.users,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UsersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.users,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<T> mealFoodsRefs<T extends Object>(
+    Expression<T> Function($$MealFoodsTableAnnotationComposer a) f,
+  ) {
+    final $$MealFoodsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.foodId,
+      referencedTable: $db.mealFoods,
+      getReferencedColumn: (t) => t.foodId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MealFoodsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.mealFoods,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$FoodsTableTableManager
@@ -9707,9 +11775,9 @@ class $$FoodsTableTableManager
           $$FoodsTableAnnotationComposer,
           $$FoodsTableCreateCompanionBuilder,
           $$FoodsTableUpdateCompanionBuilder,
-          (Food, BaseReferences<_$AppDatabase, $FoodsTable, Food>),
+          (Food, $$FoodsTableReferences),
           Food,
-          PrefetchHooks Function()
+          PrefetchHooks Function({bool userId, bool mealFoodsRefs})
         > {
   $$FoodsTableTableManager(_$AppDatabase db, $FoodsTable table)
     : super(
@@ -9771,9 +11839,64 @@ class $$FoodsTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) =>
+                    (e.readTable(table), $$FoodsTableReferences(db, table, e)),
+              )
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback: ({userId = false, mealFoodsRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [if (mealFoodsRefs) db.mealFoods],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (userId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.userId,
+                                referencedTable: $$FoodsTableReferences
+                                    ._userIdTable(db),
+                                referencedColumn: $$FoodsTableReferences
+                                    ._userIdTable(db)
+                                    .userId,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (mealFoodsRefs)
+                    await $_getPrefetchedData<Food, $FoodsTable, MealFood>(
+                      currentTable: table,
+                      referencedTable: $$FoodsTableReferences
+                          ._mealFoodsRefsTable(db),
+                      managerFromTypedResult: (p0) =>
+                          $$FoodsTableReferences(db, table, p0).mealFoodsRefs,
+                      referencedItemsForCurrentItem: (item, referencedItems) =>
+                          referencedItems.where((e) => e.foodId == item.foodId),
+                      typedResults: items,
+                    ),
+                ];
+              },
+            );
+          },
         ),
       );
 }
@@ -9788,9 +11911,9 @@ typedef $$FoodsTableProcessedTableManager =
       $$FoodsTableAnnotationComposer,
       $$FoodsTableCreateCompanionBuilder,
       $$FoodsTableUpdateCompanionBuilder,
-      (Food, BaseReferences<_$AppDatabase, $FoodsTable, Food>),
+      (Food, $$FoodsTableReferences),
       Food,
-      PrefetchHooks Function()
+      PrefetchHooks Function({bool userId, bool mealFoodsRefs})
     >;
 typedef $$MealFoodsTableCreateCompanionBuilder =
     MealFoodsCompanion Function({
@@ -9811,6 +11934,47 @@ typedef $$MealFoodsTableUpdateCompanionBuilder =
       Value<int> rowid,
     });
 
+final class $$MealFoodsTableReferences
+    extends BaseReferences<_$AppDatabase, $MealFoodsTable, MealFood> {
+  $$MealFoodsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $MealsTable _mealIdTable(_$AppDatabase db) => db.meals.createAlias(
+    $_aliasNameGenerator(db.mealFoods.mealId, db.meals.mealId),
+  );
+
+  $$MealsTableProcessedTableManager get mealId {
+    final $_column = $_itemColumn<String>('meal_id')!;
+
+    final manager = $$MealsTableTableManager(
+      $_db,
+      $_db.meals,
+    ).filter((f) => f.mealId.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_mealIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $FoodsTable _foodIdTable(_$AppDatabase db) => db.foods.createAlias(
+    $_aliasNameGenerator(db.mealFoods.foodId, db.foods.foodId),
+  );
+
+  $$FoodsTableProcessedTableManager get foodId {
+    final $_column = $_itemColumn<String>('food_id')!;
+
+    final manager = $$FoodsTableTableManager(
+      $_db,
+      $_db.foods,
+    ).filter((f) => f.foodId.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_foodIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
 class $$MealFoodsTableFilterComposer
     extends Composer<_$AppDatabase, $MealFoodsTable> {
   $$MealFoodsTableFilterComposer({
@@ -9825,16 +11989,6 @@ class $$MealFoodsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get mealId => $composableBuilder(
-    column: $table.mealId,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get foodId => $composableBuilder(
-    column: $table.foodId,
-    builder: (column) => ColumnFilters(column),
-  );
-
   ColumnFilters<double> get quantityGrams => $composableBuilder(
     column: $table.quantityGrams,
     builder: (column) => ColumnFilters(column),
@@ -9844,6 +11998,52 @@ class $$MealFoodsTableFilterComposer
     column: $table.createdAt,
     builder: (column) => ColumnFilters(column),
   );
+
+  $$MealsTableFilterComposer get mealId {
+    final $$MealsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.mealId,
+      referencedTable: $db.meals,
+      getReferencedColumn: (t) => t.mealId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MealsTableFilterComposer(
+            $db: $db,
+            $table: $db.meals,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$FoodsTableFilterComposer get foodId {
+    final $$FoodsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.foodId,
+      referencedTable: $db.foods,
+      getReferencedColumn: (t) => t.foodId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$FoodsTableFilterComposer(
+            $db: $db,
+            $table: $db.foods,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$MealFoodsTableOrderingComposer
@@ -9860,16 +12060,6 @@ class $$MealFoodsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get mealId => $composableBuilder(
-    column: $table.mealId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get foodId => $composableBuilder(
-    column: $table.foodId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
   ColumnOrderings<double> get quantityGrams => $composableBuilder(
     column: $table.quantityGrams,
     builder: (column) => ColumnOrderings(column),
@@ -9879,6 +12069,52 @@ class $$MealFoodsTableOrderingComposer
     column: $table.createdAt,
     builder: (column) => ColumnOrderings(column),
   );
+
+  $$MealsTableOrderingComposer get mealId {
+    final $$MealsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.mealId,
+      referencedTable: $db.meals,
+      getReferencedColumn: (t) => t.mealId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MealsTableOrderingComposer(
+            $db: $db,
+            $table: $db.meals,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$FoodsTableOrderingComposer get foodId {
+    final $$FoodsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.foodId,
+      referencedTable: $db.foods,
+      getReferencedColumn: (t) => t.foodId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$FoodsTableOrderingComposer(
+            $db: $db,
+            $table: $db.foods,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$MealFoodsTableAnnotationComposer
@@ -9893,12 +12129,6 @@ class $$MealFoodsTableAnnotationComposer
   GeneratedColumn<String> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<String> get mealId =>
-      $composableBuilder(column: $table.mealId, builder: (column) => column);
-
-  GeneratedColumn<String> get foodId =>
-      $composableBuilder(column: $table.foodId, builder: (column) => column);
-
   GeneratedColumn<double> get quantityGrams => $composableBuilder(
     column: $table.quantityGrams,
     builder: (column) => column,
@@ -9906,6 +12136,52 @@ class $$MealFoodsTableAnnotationComposer
 
   GeneratedColumn<String> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  $$MealsTableAnnotationComposer get mealId {
+    final $$MealsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.mealId,
+      referencedTable: $db.meals,
+      getReferencedColumn: (t) => t.mealId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MealsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.meals,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$FoodsTableAnnotationComposer get foodId {
+    final $$FoodsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.foodId,
+      referencedTable: $db.foods,
+      getReferencedColumn: (t) => t.foodId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$FoodsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.foods,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$MealFoodsTableTableManager
@@ -9919,9 +12195,9 @@ class $$MealFoodsTableTableManager
           $$MealFoodsTableAnnotationComposer,
           $$MealFoodsTableCreateCompanionBuilder,
           $$MealFoodsTableUpdateCompanionBuilder,
-          (MealFood, BaseReferences<_$AppDatabase, $MealFoodsTable, MealFood>),
+          (MealFood, $$MealFoodsTableReferences),
           MealFood,
-          PrefetchHooks Function()
+          PrefetchHooks Function({bool mealId, bool foodId})
         > {
   $$MealFoodsTableTableManager(_$AppDatabase db, $MealFoodsTable table)
     : super(
@@ -9967,9 +12243,67 @@ class $$MealFoodsTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$MealFoodsTableReferences(db, table, e),
+                ),
+              )
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback: ({mealId = false, foodId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (mealId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.mealId,
+                                referencedTable: $$MealFoodsTableReferences
+                                    ._mealIdTable(db),
+                                referencedColumn: $$MealFoodsTableReferences
+                                    ._mealIdTable(db)
+                                    .mealId,
+                              )
+                              as T;
+                    }
+                    if (foodId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.foodId,
+                                referencedTable: $$MealFoodsTableReferences
+                                    ._foodIdTable(db),
+                                referencedColumn: $$MealFoodsTableReferences
+                                    ._foodIdTable(db)
+                                    .foodId,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
         ),
       );
 }
@@ -9984,9 +12318,9 @@ typedef $$MealFoodsTableProcessedTableManager =
       $$MealFoodsTableAnnotationComposer,
       $$MealFoodsTableCreateCompanionBuilder,
       $$MealFoodsTableUpdateCompanionBuilder,
-      (MealFood, BaseReferences<_$AppDatabase, $MealFoodsTable, MealFood>),
+      (MealFood, $$MealFoodsTableReferences),
       MealFood,
-      PrefetchHooks Function()
+      PrefetchHooks Function({bool mealId, bool foodId})
     >;
 typedef $$MeasurementsTableCreateCompanionBuilder =
     MeasurementsCompanion Function({
@@ -10031,6 +12365,29 @@ typedef $$MeasurementsTableUpdateCompanionBuilder =
       Value<int> rowid,
     });
 
+final class $$MeasurementsTableReferences
+    extends BaseReferences<_$AppDatabase, $MeasurementsTable, Measurement> {
+  $$MeasurementsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $UsersTable _userIdTable(_$AppDatabase db) => db.users.createAlias(
+    $_aliasNameGenerator(db.measurements.userId, db.users.userId),
+  );
+
+  $$UsersTableProcessedTableManager get userId {
+    final $_column = $_itemColumn<String>('user_id')!;
+
+    final manager = $$UsersTableTableManager(
+      $_db,
+      $_db.users,
+    ).filter((f) => f.userId.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_userIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
 class $$MeasurementsTableFilterComposer
     extends Composer<_$AppDatabase, $MeasurementsTable> {
   $$MeasurementsTableFilterComposer({
@@ -10042,11 +12399,6 @@ class $$MeasurementsTableFilterComposer
   });
   ColumnFilters<String> get measurementId => $composableBuilder(
     column: $table.measurementId,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get userId => $composableBuilder(
-    column: $table.userId,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -10124,6 +12476,29 @@ class $$MeasurementsTableFilterComposer
     column: $table.createdAt,
     builder: (column) => ColumnFilters(column),
   );
+
+  $$UsersTableFilterComposer get userId {
+    final $$UsersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.users,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UsersTableFilterComposer(
+            $db: $db,
+            $table: $db.users,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$MeasurementsTableOrderingComposer
@@ -10137,11 +12512,6 @@ class $$MeasurementsTableOrderingComposer
   });
   ColumnOrderings<String> get measurementId => $composableBuilder(
     column: $table.measurementId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get userId => $composableBuilder(
-    column: $table.userId,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -10219,6 +12589,29 @@ class $$MeasurementsTableOrderingComposer
     column: $table.createdAt,
     builder: (column) => ColumnOrderings(column),
   );
+
+  $$UsersTableOrderingComposer get userId {
+    final $$UsersTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.users,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UsersTableOrderingComposer(
+            $db: $db,
+            $table: $db.users,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$MeasurementsTableAnnotationComposer
@@ -10234,9 +12627,6 @@ class $$MeasurementsTableAnnotationComposer
     column: $table.measurementId,
     builder: (column) => column,
   );
-
-  GeneratedColumn<String> get userId =>
-      $composableBuilder(column: $table.userId, builder: (column) => column);
 
   GeneratedColumn<String> get measurementDate => $composableBuilder(
     column: $table.measurementDate,
@@ -10290,6 +12680,29 @@ class $$MeasurementsTableAnnotationComposer
 
   GeneratedColumn<String> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  $$UsersTableAnnotationComposer get userId {
+    final $$UsersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.users,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UsersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.users,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$MeasurementsTableTableManager
@@ -10303,12 +12716,9 @@ class $$MeasurementsTableTableManager
           $$MeasurementsTableAnnotationComposer,
           $$MeasurementsTableCreateCompanionBuilder,
           $$MeasurementsTableUpdateCompanionBuilder,
-          (
-            Measurement,
-            BaseReferences<_$AppDatabase, $MeasurementsTable, Measurement>,
-          ),
+          (Measurement, $$MeasurementsTableReferences),
           Measurement,
-          PrefetchHooks Function()
+          PrefetchHooks Function({bool userId})
         > {
   $$MeasurementsTableTableManager(_$AppDatabase db, $MeasurementsTable table)
     : super(
@@ -10402,9 +12812,54 @@ class $$MeasurementsTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$MeasurementsTableReferences(db, table, e),
+                ),
+              )
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback: ({userId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (userId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.userId,
+                                referencedTable: $$MeasurementsTableReferences
+                                    ._userIdTable(db),
+                                referencedColumn: $$MeasurementsTableReferences
+                                    ._userIdTable(db)
+                                    .userId,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
         ),
       );
 }
@@ -10419,12 +12874,9 @@ typedef $$MeasurementsTableProcessedTableManager =
       $$MeasurementsTableAnnotationComposer,
       $$MeasurementsTableCreateCompanionBuilder,
       $$MeasurementsTableUpdateCompanionBuilder,
-      (
-        Measurement,
-        BaseReferences<_$AppDatabase, $MeasurementsTable, Measurement>,
-      ),
+      (Measurement, $$MeasurementsTableReferences),
       Measurement,
-      PrefetchHooks Function()
+      PrefetchHooks Function({bool userId})
     >;
 typedef $$UploadsTableCreateCompanionBuilder =
     UploadsCompanion Function({
@@ -10449,6 +12901,29 @@ typedef $$UploadsTableUpdateCompanionBuilder =
       Value<int> rowid,
     });
 
+final class $$UploadsTableReferences
+    extends BaseReferences<_$AppDatabase, $UploadsTable, Upload> {
+  $$UploadsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $UsersTable _userIdTable(_$AppDatabase db) => db.users.createAlias(
+    $_aliasNameGenerator(db.uploads.userId, db.users.userId),
+  );
+
+  $$UsersTableProcessedTableManager get userId {
+    final $_column = $_itemColumn<String>('user_id')!;
+
+    final manager = $$UsersTableTableManager(
+      $_db,
+      $_db.users,
+    ).filter((f) => f.userId.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_userIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
 class $$UploadsTableFilterComposer
     extends Composer<_$AppDatabase, $UploadsTable> {
   $$UploadsTableFilterComposer({
@@ -10460,11 +12935,6 @@ class $$UploadsTableFilterComposer
   });
   ColumnFilters<String> get uploadId => $composableBuilder(
     column: $table.uploadId,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get userId => $composableBuilder(
-    column: $table.userId,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -10492,6 +12962,29 @@ class $$UploadsTableFilterComposer
     column: $table.createdAt,
     builder: (column) => ColumnFilters(column),
   );
+
+  $$UsersTableFilterComposer get userId {
+    final $$UsersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.users,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UsersTableFilterComposer(
+            $db: $db,
+            $table: $db.users,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$UploadsTableOrderingComposer
@@ -10505,11 +12998,6 @@ class $$UploadsTableOrderingComposer
   });
   ColumnOrderings<String> get uploadId => $composableBuilder(
     column: $table.uploadId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get userId => $composableBuilder(
-    column: $table.userId,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -10537,6 +13025,29 @@ class $$UploadsTableOrderingComposer
     column: $table.createdAt,
     builder: (column) => ColumnOrderings(column),
   );
+
+  $$UsersTableOrderingComposer get userId {
+    final $$UsersTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.users,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UsersTableOrderingComposer(
+            $db: $db,
+            $table: $db.users,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$UploadsTableAnnotationComposer
@@ -10550,9 +13061,6 @@ class $$UploadsTableAnnotationComposer
   });
   GeneratedColumn<String> get uploadId =>
       $composableBuilder(column: $table.uploadId, builder: (column) => column);
-
-  GeneratedColumn<String> get userId =>
-      $composableBuilder(column: $table.userId, builder: (column) => column);
 
   GeneratedColumn<String> get fileName =>
       $composableBuilder(column: $table.fileName, builder: (column) => column);
@@ -10570,6 +13078,29 @@ class $$UploadsTableAnnotationComposer
 
   GeneratedColumn<String> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  $$UsersTableAnnotationComposer get userId {
+    final $$UsersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.users,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UsersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.users,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$UploadsTableTableManager
@@ -10583,9 +13114,9 @@ class $$UploadsTableTableManager
           $$UploadsTableAnnotationComposer,
           $$UploadsTableCreateCompanionBuilder,
           $$UploadsTableUpdateCompanionBuilder,
-          (Upload, BaseReferences<_$AppDatabase, $UploadsTable, Upload>),
+          (Upload, $$UploadsTableReferences),
           Upload,
-          PrefetchHooks Function()
+          PrefetchHooks Function({bool userId})
         > {
   $$UploadsTableTableManager(_$AppDatabase db, $UploadsTable table)
     : super(
@@ -10639,9 +13170,54 @@ class $$UploadsTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$UploadsTableReferences(db, table, e),
+                ),
+              )
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback: ({userId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (userId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.userId,
+                                referencedTable: $$UploadsTableReferences
+                                    ._userIdTable(db),
+                                referencedColumn: $$UploadsTableReferences
+                                    ._userIdTable(db)
+                                    .userId,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
         ),
       );
 }
@@ -10656,9 +13232,9 @@ typedef $$UploadsTableProcessedTableManager =
       $$UploadsTableAnnotationComposer,
       $$UploadsTableCreateCompanionBuilder,
       $$UploadsTableUpdateCompanionBuilder,
-      (Upload, BaseReferences<_$AppDatabase, $UploadsTable, Upload>),
+      (Upload, $$UploadsTableReferences),
       Upload,
-      PrefetchHooks Function()
+      PrefetchHooks Function({bool userId})
     >;
 typedef $$ChatsTableCreateCompanionBuilder =
     ChatsCompanion Function({
@@ -10679,6 +13255,47 @@ typedef $$ChatsTableUpdateCompanionBuilder =
       Value<int> rowid,
     });
 
+final class $$ChatsTableReferences
+    extends BaseReferences<_$AppDatabase, $ChatsTable, Chat> {
+  $$ChatsTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $UsersTable _userIdTable(_$AppDatabase db) => db.users.createAlias(
+    $_aliasNameGenerator(db.chats.userId, db.users.userId),
+  );
+
+  $$UsersTableProcessedTableManager get userId {
+    final $_column = $_itemColumn<String>('user_id')!;
+
+    final manager = $$UsersTableTableManager(
+      $_db,
+      $_db.users,
+    ).filter((f) => f.userId.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_userIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static MultiTypedResultKey<$MessagesTable, List<Message>> _messagesRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.messages,
+    aliasName: $_aliasNameGenerator(db.chats.chatId, db.messages.chatId),
+  );
+
+  $$MessagesTableProcessedTableManager get messagesRefs {
+    final manager = $$MessagesTableTableManager($_db, $_db.messages).filter(
+      (f) => f.chatId.chatId.sqlEquals($_itemColumn<String>('chat_id')!),
+    );
+
+    final cache = $_typedResult.readTableOrNull(_messagesRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
 class $$ChatsTableFilterComposer extends Composer<_$AppDatabase, $ChatsTable> {
   $$ChatsTableFilterComposer({
     required super.$db,
@@ -10689,11 +13306,6 @@ class $$ChatsTableFilterComposer extends Composer<_$AppDatabase, $ChatsTable> {
   });
   ColumnFilters<String> get chatId => $composableBuilder(
     column: $table.chatId,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get userId => $composableBuilder(
-    column: $table.userId,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -10711,6 +13323,54 @@ class $$ChatsTableFilterComposer extends Composer<_$AppDatabase, $ChatsTable> {
     column: $table.updatedAt,
     builder: (column) => ColumnFilters(column),
   );
+
+  $$UsersTableFilterComposer get userId {
+    final $$UsersTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.users,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UsersTableFilterComposer(
+            $db: $db,
+            $table: $db.users,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<bool> messagesRefs(
+    Expression<bool> Function($$MessagesTableFilterComposer f) f,
+  ) {
+    final $$MessagesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.chatId,
+      referencedTable: $db.messages,
+      getReferencedColumn: (t) => t.chatId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MessagesTableFilterComposer(
+            $db: $db,
+            $table: $db.messages,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$ChatsTableOrderingComposer
@@ -10724,11 +13384,6 @@ class $$ChatsTableOrderingComposer
   });
   ColumnOrderings<String> get chatId => $composableBuilder(
     column: $table.chatId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get userId => $composableBuilder(
-    column: $table.userId,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -10746,6 +13401,29 @@ class $$ChatsTableOrderingComposer
     column: $table.updatedAt,
     builder: (column) => ColumnOrderings(column),
   );
+
+  $$UsersTableOrderingComposer get userId {
+    final $$UsersTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.users,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UsersTableOrderingComposer(
+            $db: $db,
+            $table: $db.users,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$ChatsTableAnnotationComposer
@@ -10760,9 +13438,6 @@ class $$ChatsTableAnnotationComposer
   GeneratedColumn<String> get chatId =>
       $composableBuilder(column: $table.chatId, builder: (column) => column);
 
-  GeneratedColumn<String> get userId =>
-      $composableBuilder(column: $table.userId, builder: (column) => column);
-
   GeneratedColumn<String> get title =>
       $composableBuilder(column: $table.title, builder: (column) => column);
 
@@ -10771,6 +13446,54 @@ class $$ChatsTableAnnotationComposer
 
   GeneratedColumn<String> get updatedAt =>
       $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  $$UsersTableAnnotationComposer get userId {
+    final $$UsersTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.users,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UsersTableAnnotationComposer(
+            $db: $db,
+            $table: $db.users,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<T> messagesRefs<T extends Object>(
+    Expression<T> Function($$MessagesTableAnnotationComposer a) f,
+  ) {
+    final $$MessagesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.chatId,
+      referencedTable: $db.messages,
+      getReferencedColumn: (t) => t.chatId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$MessagesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.messages,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$ChatsTableTableManager
@@ -10784,9 +13507,9 @@ class $$ChatsTableTableManager
           $$ChatsTableAnnotationComposer,
           $$ChatsTableCreateCompanionBuilder,
           $$ChatsTableUpdateCompanionBuilder,
-          (Chat, BaseReferences<_$AppDatabase, $ChatsTable, Chat>),
+          (Chat, $$ChatsTableReferences),
           Chat,
-          PrefetchHooks Function()
+          PrefetchHooks Function({bool userId, bool messagesRefs})
         > {
   $$ChatsTableTableManager(_$AppDatabase db, $ChatsTable table)
     : super(
@@ -10832,9 +13555,64 @@ class $$ChatsTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) =>
+                    (e.readTable(table), $$ChatsTableReferences(db, table, e)),
+              )
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback: ({userId = false, messagesRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [if (messagesRefs) db.messages],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (userId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.userId,
+                                referencedTable: $$ChatsTableReferences
+                                    ._userIdTable(db),
+                                referencedColumn: $$ChatsTableReferences
+                                    ._userIdTable(db)
+                                    .userId,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (messagesRefs)
+                    await $_getPrefetchedData<Chat, $ChatsTable, Message>(
+                      currentTable: table,
+                      referencedTable: $$ChatsTableReferences
+                          ._messagesRefsTable(db),
+                      managerFromTypedResult: (p0) =>
+                          $$ChatsTableReferences(db, table, p0).messagesRefs,
+                      referencedItemsForCurrentItem: (item, referencedItems) =>
+                          referencedItems.where((e) => e.chatId == item.chatId),
+                      typedResults: items,
+                    ),
+                ];
+              },
+            );
+          },
         ),
       );
 }
@@ -10849,9 +13627,9 @@ typedef $$ChatsTableProcessedTableManager =
       $$ChatsTableAnnotationComposer,
       $$ChatsTableCreateCompanionBuilder,
       $$ChatsTableUpdateCompanionBuilder,
-      (Chat, BaseReferences<_$AppDatabase, $ChatsTable, Chat>),
+      (Chat, $$ChatsTableReferences),
       Chat,
-      PrefetchHooks Function()
+      PrefetchHooks Function({bool userId, bool messagesRefs})
     >;
 typedef $$MessagesTableCreateCompanionBuilder =
     MessagesCompanion Function({
@@ -10874,6 +13652,29 @@ typedef $$MessagesTableUpdateCompanionBuilder =
       Value<int> rowid,
     });
 
+final class $$MessagesTableReferences
+    extends BaseReferences<_$AppDatabase, $MessagesTable, Message> {
+  $$MessagesTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $ChatsTable _chatIdTable(_$AppDatabase db) => db.chats.createAlias(
+    $_aliasNameGenerator(db.messages.chatId, db.chats.chatId),
+  );
+
+  $$ChatsTableProcessedTableManager get chatId {
+    final $_column = $_itemColumn<String>('chat_id')!;
+
+    final manager = $$ChatsTableTableManager(
+      $_db,
+      $_db.chats,
+    ).filter((f) => f.chatId.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_chatIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
 class $$MessagesTableFilterComposer
     extends Composer<_$AppDatabase, $MessagesTable> {
   $$MessagesTableFilterComposer({
@@ -10885,11 +13686,6 @@ class $$MessagesTableFilterComposer
   });
   ColumnFilters<String> get messageId => $composableBuilder(
     column: $table.messageId,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get chatId => $composableBuilder(
-    column: $table.chatId,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -10912,6 +13708,29 @@ class $$MessagesTableFilterComposer
     column: $table.timestamp,
     builder: (column) => ColumnFilters(column),
   );
+
+  $$ChatsTableFilterComposer get chatId {
+    final $$ChatsTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.chatId,
+      referencedTable: $db.chats,
+      getReferencedColumn: (t) => t.chatId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ChatsTableFilterComposer(
+            $db: $db,
+            $table: $db.chats,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$MessagesTableOrderingComposer
@@ -10925,11 +13744,6 @@ class $$MessagesTableOrderingComposer
   });
   ColumnOrderings<String> get messageId => $composableBuilder(
     column: $table.messageId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get chatId => $composableBuilder(
-    column: $table.chatId,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -10952,6 +13766,29 @@ class $$MessagesTableOrderingComposer
     column: $table.timestamp,
     builder: (column) => ColumnOrderings(column),
   );
+
+  $$ChatsTableOrderingComposer get chatId {
+    final $$ChatsTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.chatId,
+      referencedTable: $db.chats,
+      getReferencedColumn: (t) => t.chatId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ChatsTableOrderingComposer(
+            $db: $db,
+            $table: $db.chats,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$MessagesTableAnnotationComposer
@@ -10966,9 +13803,6 @@ class $$MessagesTableAnnotationComposer
   GeneratedColumn<String> get messageId =>
       $composableBuilder(column: $table.messageId, builder: (column) => column);
 
-  GeneratedColumn<String> get chatId =>
-      $composableBuilder(column: $table.chatId, builder: (column) => column);
-
   GeneratedColumn<String> get role =>
       $composableBuilder(column: $table.role, builder: (column) => column);
 
@@ -10980,6 +13814,29 @@ class $$MessagesTableAnnotationComposer
 
   GeneratedColumn<String> get timestamp =>
       $composableBuilder(column: $table.timestamp, builder: (column) => column);
+
+  $$ChatsTableAnnotationComposer get chatId {
+    final $$ChatsTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.chatId,
+      referencedTable: $db.chats,
+      getReferencedColumn: (t) => t.chatId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ChatsTableAnnotationComposer(
+            $db: $db,
+            $table: $db.chats,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$MessagesTableTableManager
@@ -10993,9 +13850,9 @@ class $$MessagesTableTableManager
           $$MessagesTableAnnotationComposer,
           $$MessagesTableCreateCompanionBuilder,
           $$MessagesTableUpdateCompanionBuilder,
-          (Message, BaseReferences<_$AppDatabase, $MessagesTable, Message>),
+          (Message, $$MessagesTableReferences),
           Message,
-          PrefetchHooks Function()
+          PrefetchHooks Function({bool chatId})
         > {
   $$MessagesTableTableManager(_$AppDatabase db, $MessagesTable table)
     : super(
@@ -11045,9 +13902,54 @@ class $$MessagesTableTableManager
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$MessagesTableReferences(db, table, e),
+                ),
+              )
               .toList(),
-          prefetchHooksCallback: null,
+          prefetchHooksCallback: ({chatId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (chatId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.chatId,
+                                referencedTable: $$MessagesTableReferences
+                                    ._chatIdTable(db),
+                                referencedColumn: $$MessagesTableReferences
+                                    ._chatIdTable(db)
+                                    .chatId,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
         ),
       );
 }
@@ -11062,9 +13964,9 @@ typedef $$MessagesTableProcessedTableManager =
       $$MessagesTableAnnotationComposer,
       $$MessagesTableCreateCompanionBuilder,
       $$MessagesTableUpdateCompanionBuilder,
-      (Message, BaseReferences<_$AppDatabase, $MessagesTable, Message>),
+      (Message, $$MessagesTableReferences),
       Message,
-      PrefetchHooks Function()
+      PrefetchHooks Function({bool chatId})
     >;
 typedef $$IntegrationsTableCreateCompanionBuilder =
     IntegrationsCompanion Function({

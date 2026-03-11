@@ -74,6 +74,16 @@ class AppDatabase extends _$AppDatabase {
         onCreate: (m) async {
           await m.createAll();
           await customStatement('PRAGMA foreign_keys = ON');
+          await customStatement(
+              'CREATE INDEX idx_sets_exercise_id ON sets (exercise_id)');
+          await customStatement(
+              'CREATE INDEX idx_sets_day_id ON sets (day_id)');
+          await customStatement(
+              'CREATE INDEX idx_meals_meal_date ON meals (meal_date)');
+          await customStatement(
+              'CREATE INDEX idx_day_exercises_day_id ON day_exercises (day_id)');
+          await customStatement(
+              'CREATE INDEX idx_messages_chat_id ON messages (chat_id)');
         },
         onUpgrade: (m, from, to) async {},
         beforeOpen: (details) async {

@@ -1,10 +1,13 @@
 import 'package:drift/drift.dart';
 
+import 'days_table.dart';
+import 'exercises_table.dart';
+
 @DataClassName('SetEntry')
 class Sets extends Table {
   TextColumn get setId => text()();
-  TextColumn get exerciseId => text()();
-  TextColumn get dayId => text()();
+  TextColumn get exerciseId => text().references(Exercises, #exerciseId)();
+  TextColumn get dayId => text().references(Days, #dayId)();
   IntColumn get reps => integer()();
   RealColumn get weightKg => real()();
   IntColumn get repsInReserve => integer().nullable()();

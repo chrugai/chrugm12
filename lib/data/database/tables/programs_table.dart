@@ -1,8 +1,10 @@
 import 'package:drift/drift.dart';
 
+import 'users_table.dart';
+
 class Programs extends Table {
   TextColumn get programId => text()();
-  TextColumn get userId => text()();
+  TextColumn get userId => text().references(Users, #userId)();
   TextColumn get name => text()();
   TextColumn get description => text().nullable()();
   TextColumn get createdAt => text()();

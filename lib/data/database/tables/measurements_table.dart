@@ -1,8 +1,10 @@
 import 'package:drift/drift.dart';
 
+import 'users_table.dart';
+
 class Measurements extends Table {
   TextColumn get measurementId => text()();
-  TextColumn get userId => text()();
+  TextColumn get userId => text().references(Users, #userId)();
   TextColumn get measurementDate => text()();
   RealColumn get neckCm => real().nullable()();
   RealColumn get shouldersCm => real().nullable()();

@@ -20,4 +20,7 @@ class IntegrationDao extends DatabaseAccessor<AppDatabase>
 
   Future<bool> updateIntegration(IntegrationsCompanion integration) =>
       update(integrations).replace(integration);
+
+  Future<void> insertIntegration(IntegrationsCompanion integration) =>
+      into(integrations).insert(integration);
 }

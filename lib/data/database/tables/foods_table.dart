@@ -1,5 +1,7 @@
 import 'package:drift/drift.dart';
 
+import 'users_table.dart';
+
 class Foods extends Table {
   TextColumn get foodId => text()();
   TextColumn get name => text()();
@@ -8,7 +10,7 @@ class Foods extends Table {
   RealColumn get carbsGPer100g => real()();
   RealColumn get fatGPer100g => real()();
   BoolColumn get isUserCustom => boolean().withDefault(const Constant(false))();
-  TextColumn get userId => text().nullable()();
+  TextColumn get userId => text().nullable().references(Users, #userId)();
   TextColumn get createdAt => text()();
 
   @override
