@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'core/theme/app_theme.dart';
+
 class ChrugApp extends StatelessWidget {
   const ChrugApp({super.key});
 
@@ -8,10 +10,7 @@ class ChrugApp extends StatelessWidget {
     return MaterialApp(
       title: 'Chrug',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorSchemeSeed: Colors.blue,
-        useMaterial3: true,
-      ),
+      theme: AppTheme.lightTheme,
       home: const Scaffold(
         body: Center(
           child: Text('Chrug'),
