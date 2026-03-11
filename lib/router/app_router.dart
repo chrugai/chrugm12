@@ -7,6 +7,9 @@ import '../features/common/screens/placeholder_screen.dart';
 import '../features/common/widgets/bottom_tab_navigator.dart';
 import '../features/onboarding/screens/first_time_screen.dart';
 import '../features/onboarding/screens/watch_demo_screen.dart';
+import '../features/workout/screens/workout_days_screen.dart';
+import '../features/program/screens/pick_program_screen.dart';
+import '../features/program/screens/program_details_preview.dart';
 import 'route_constants.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -64,8 +67,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             routes: [
               GoRoute(
                 path: Routes.workout,
-                builder: (context, state) =>
-                    const PlaceholderScreen(routeName: 'Workout Days'),
+                builder: (context, state) => const WorkoutDaysScreen(),
                 routes: [
                   GoRoute(
                     path: Routes.workoutDay,
@@ -127,14 +129,22 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: Routes.pickProgram,
+        builder: (context, state) => const PickAProgramScreen(),
+      ),
+      GoRoute(
+        path: Routes.programCreate,
         builder: (context, state) =>
-            const PlaceholderScreen(routeName: 'Pick a Program'),
+            const PlaceholderScreen(routeName: 'Create Program'),
+      ),
+      GoRoute(
+        path: Routes.programChange,
+        builder: (context, state) =>
+            const PlaceholderScreen(routeName: 'Change Program'),
       ),
       GoRoute(
         path: Routes.programDetails,
-        builder: (context, state) => PlaceholderScreen(
-          routeName:
-              'Program ${state.pathParameters['programId']}',
+        builder: (context, state) => ProgramDetailsPreview(
+          programId: state.pathParameters['programId']!,
         ),
       ),
       GoRoute(
