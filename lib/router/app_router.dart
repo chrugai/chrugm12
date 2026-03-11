@@ -5,8 +5,8 @@ import 'package:go_router/go_router.dart';
 import '../features/auth/screens/splash_screen.dart';
 import '../features/common/screens/placeholder_screen.dart';
 import '../features/common/widgets/bottom_tab_navigator.dart';
-import '../features/onboarding/screens/first_time_screen.dart';
-import '../features/onboarding/screens/watch_demo_screen.dart';
+import '../features/auth/screens/first_time_user_screen.dart';
+import '../features/auth/screens/watch_demo_screen.dart';
 import 'route_constants.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -26,7 +26,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: Routes.firstTime,
-        builder: (context, state) => const FirstTimeScreen(),
+        builder: (context, state) => const FirstTimeUserScreen(),
       ),
       GoRoute(
         path: Routes.watchDemo,
