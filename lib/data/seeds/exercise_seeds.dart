@@ -269,7 +269,7 @@ Future<void> seedExercises(AppDatabase db) async {
         _ex('ex_glute_bridge', 'Glute Bridge', 'Glutes', 'Bodyweight', 'Isolation', ['glutes', 'hamstrings'], false, 'A supine hip extension performed on the floor for glute activation.', now),
         _ex('ex_barbell_glute_bridge', 'Barbell Glute Bridge', 'Glutes', 'Barbell', 'Compound', ['glutes', 'hamstrings'], true, 'A weighted glute bridge with a barbell across the hips for progressive overload.', now),
         _ex('ex_cable_pull_through_glutes', 'Cable Pull-Through', 'Glutes', 'Cable', 'Compound', ['glutes', 'hamstrings'], true, 'A standing hip extension using a rope attachment from a low cable to target glutes.', now),
-        _ex('ex_cable_kickback', 'Cable Glute Kickback', 'Glutes', 'Cable', 'Isolation', ['glutes'], false, 'Kicking the leg backward against cable resistance to isolate the glute max.', now),
+        _ex('ex_cable_glute_kickback', 'Cable Glute Kickback', 'Glutes', 'Cable', 'Isolation', ['glutes'], false, 'Kicking the leg backward against cable resistance to isolate the glute max.', now),
         _ex('ex_donkey_kick', 'Donkey Kick', 'Glutes', 'Bodyweight', 'Isolation', ['glutes'], false, 'From all fours, kick one leg up toward the ceiling to isolate the glute muscles.', now),
         _ex('ex_fire_hydrant', 'Fire Hydrant', 'Glutes', 'Bodyweight', 'Isolation', ['glutes'], false, 'From all fours, lift one knee out to the side to target the glute medius.', now),
         _ex('ex_clamshell', 'Clamshell', 'Glutes', 'Resistance Band', 'Isolation', ['glutes'], false, 'Lying on your side with a band above the knees, open the top knee like a clamshell.', now),
