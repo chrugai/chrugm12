@@ -18,6 +18,8 @@ abstract class Routes {
 
   // Program
   static const String pickProgram = '/pick-program';
+  static const String programCreate = '/program-create';
+  static const String programChange = '/program-change';
   static const String programDetails = '/program-details/:programId';
 
   // Profile
