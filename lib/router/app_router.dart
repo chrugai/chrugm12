@@ -76,9 +76,9 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                     routes: [
                       GoRoute(
                         path: Routes.exerciseDetails,
-                        builder: (context, state) => PlaceholderScreen(
-                          routeName:
-                              'Exercise ${state.pathParameters['exerciseId']}',
+                        builder: (context, state) => ExerciseDetailsScreen(
+                          exerciseId: state.pathParameters['exerciseId'] ?? '',
+                          dayId: state.pathParameters['dayId'] ?? '',
                         ),
                       ),
                     ],
