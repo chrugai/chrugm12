@@ -7,6 +7,8 @@ import '../features/common/screens/placeholder_screen.dart';
 import '../features/common/widgets/bottom_tab_navigator.dart';
 import '../features/auth/screens/first_time_user_screen.dart';
 import '../features/auth/screens/watch_demo_screen.dart';
+import '../features/program/screens/pick_program_screen.dart';
+import '../features/program/screens/program_details_preview.dart';
 import 'route_constants.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -128,13 +130,12 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: Routes.pickProgram,
         builder: (context, state) =>
-            const PlaceholderScreen(routeName: 'Pick a Program'),
+            const PickAProgramScreen(),
       ),
       GoRoute(
         path: Routes.programDetails,
-        builder: (context, state) => PlaceholderScreen(
-          routeName:
-              'Program ${state.pathParameters['programId']}',
+        builder: (context, state) => ProgramDetailsPreview(
+          programId: state.pathParameters['programId']!,
         ),
       ),
       GoRoute(
