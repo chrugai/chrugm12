@@ -76,7 +76,7 @@ class _MeasurementsScreenState extends ConsumerState<MeasurementsScreen> {
       body: state.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(
-          child: Text('Error: $e', style: AppTypography.bodyMedium),
+          child: Text('Error: \$e', style: AppTypography.bodyMedium),
         ),
         data: (measurements) {
           if (measurements.isEmpty) {

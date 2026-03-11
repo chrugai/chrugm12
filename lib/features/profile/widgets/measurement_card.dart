@@ -80,7 +80,7 @@ class _MeasurementChip extends StatelessWidget {
         Text(label, style: AppTypography.bodySmall),
         const SizedBox(width: AppSpacing.xs),
         Text(
-          '$formatted cm',
+          '\$formatted cm',
           style: AppTypography.bodyMedium.copyWith(fontWeight: FontWeight.w600),
         ),
       ],

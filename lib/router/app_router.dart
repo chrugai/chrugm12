@@ -7,7 +7,10 @@ import '../features/common/screens/placeholder_screen.dart';
 import '../features/common/widgets/bottom_tab_navigator.dart';
 import '../features/ai_coach/screens/ai_coach_screen.dart';
 import '../features/auth/screens/first_time_user_screen.dart';
+import '../features/profile/screens/help_screen.dart';
+import '../features/profile/screens/faqs_screen.dart';
 import '../features/auth/screens/watch_demo_screen.dart';
+import '../features/profile/screens/measurements_screen.dart';
 import 'route_constants.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -141,7 +144,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: Routes.measurements,
         builder: (context, state) =>
-            const PlaceholderScreen(routeName: 'Measurements'),
+            const MeasurementsScreen(),
       ),
       GoRoute(
         path: Routes.uploads,
@@ -156,12 +159,12 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: Routes.help,
         builder: (context, state) =>
-            const PlaceholderScreen(routeName: 'Help'),
+            const HelpScreen(),
       ),
       GoRoute(
         path: Routes.faqs,
         builder: (context, state) =>
-            const PlaceholderScreen(routeName: 'FAQs'),
+            const FaqsScreen(),
       ),
       GoRoute(
         path: Routes.contact,

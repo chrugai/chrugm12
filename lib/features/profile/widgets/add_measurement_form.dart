@@ -127,7 +127,7 @@ class _AddMeasurementFormState extends State<AddMeasurementForm> {
                 AppSpacing.lg + bottomInset,
               ),
               itemCount: _fields.length,
-              separatorBuilder: (_, __) =>
+              separatorBuilder: (_, _) =>
                   const SizedBox(height: AppSpacing.lg),
               itemBuilder: (context, index) {
                 final (key, label) = _fields[index];

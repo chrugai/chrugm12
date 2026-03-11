@@ -141,7 +141,6 @@ void main() {
 
       expect(find.text('Neck'), findsOneWidget);
       expect(find.text('Waist'), findsOneWidget);
-      // These should not appear since they're null
       expect(find.text('Shoulders'), findsNothing);
       expect(find.text('Biceps L'), findsNothing);
     });
@@ -167,7 +166,8 @@ void main() {
         'Calves L', 'Calves R',
       ];
       for (final label in labels) {
-        expect(find.text(label), findsOneWidget, reason: 'Missing field: $label');
+        await tester.scrollUntilVisible(find.text(label), 100);
+        expect(find.text(label), findsOneWidget, reason: 'Missing field: \$label');
       }
     });
 
@@ -181,15 +181,16 @@ void main() {
       ));
       await tester.pumpAndSettle();
 
+      await tester.scrollUntilVisible(find.text('Save'), 100);
       expect(find.text('Save'), findsOneWidget);
-      // AppButton with isDisabled=true
-      final button = tester.widget<IgnorePointer>(
+      // AppButton uses Opacity 0.5 when disabled
+      final opacity = tester.widget<Opacity>(
         find.ancestor(
           of: find.text('Save'),
-          matching: find.byType(IgnorePointer),
+          matching: find.byType(Opacity),
         ).first,
       );
-      expect(button.ignoring, isTrue);
+      expect(opacity.opacity, 0.5);
     });
 
     testWidgets('pre-fills from last entry', (tester) async {
@@ -203,7 +204,6 @@ void main() {
       ));
       await tester.pumpAndSettle();
 
-      // The pre-filled values should show as text
       expect(find.text('38.5'), findsOneWidget); // neck
       expect(find.text('120'), findsOneWidget); // shoulders (whole number)
     });

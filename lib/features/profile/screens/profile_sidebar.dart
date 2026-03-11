@@ -6,6 +6,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/app_typography.dart';
 import '../../../core/widgets/display/app_avatar.dart';
+import '../../../data/models/user.dart' as models;
 import '../../../router/route_constants.dart';
 import '../../auth/providers/auth_provider.dart';
 import '../providers/profile_provider.dart';
@@ -34,7 +35,7 @@ class _ProfileSidebarState extends ConsumerState<ProfileSidebar> {
     return parts.first[0].toUpperCase();
   }
 
-  bool _isProfileComplete(user) {
+  bool _isProfileComplete(models.User user) {
     return user.name != null &&
         user.name!.isNotEmpty &&
         user.heightCm != null &&
@@ -96,7 +97,7 @@ class _ProfileSidebarState extends ConsumerState<ProfileSidebar> {
             ),
             child: userAsync.when(
               loading: () => const Center(child: CircularProgressIndicator()),
-              error: (_, __) => const Text('Error loading profile'),
+              error: (e, _) => const Text('Error loading profile'),
               data: (user) {
                 if (user == null) {
                   return const Text('No user');
